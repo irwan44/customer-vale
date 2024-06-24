@@ -39,27 +39,50 @@ class DetailBookingViewState extends State<DetailBookingView> {
               width: double.infinity,
               child: SizedBox(
                 height: 50, // <-- Your height
-                child: ElevatedButton(
-                  onPressed: () => controller.BookingID(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    elevation: 4.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 10,),
-                      Text(
-                        'Konfirmasi Sekarang',
-                        style: GoogleFonts.nunito(
-                          fontWeight: FontWeight.bold,
+                child: Obx(() => ElevatedButton(
+                    onPressed: controller.isLoading.value
+                        ? null
+                        : () {
+                      controller.BookingID();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      elevation: 4.0,
+                    ),
+                    child: controller.isLoading.value
+                        ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(
                           color: Colors.white,
                         ),
-                      ),
-                    ],
+                        SizedBox(width: 10),
+                        Text(
+                          'Loading...',
+                          style: GoogleFonts.nunito(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    )
+                        : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 10),
+                        Text(
+                          'Konfirmasi Sekarang',
+                          style: GoogleFonts.nunito(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

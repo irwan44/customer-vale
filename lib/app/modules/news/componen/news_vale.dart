@@ -23,46 +23,86 @@ class NewsHelp extends StatefulWidget {
 class _NewsHelpState extends State<NewsHelp> {
   final Completer<WebViewController> _controller =
   Completer<WebViewController>();
+  bool isLoading = true;  // Variable to manage loading state
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          forceMaterialTransparency: true,
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          title: Text('News', style: GoogleFonts.nunito(color: MyColors.appPrimaryColor, fontWeight: FontWeight.bold),),
-          actions: [
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(Routes.CHAT);
-                  },
-                  child:
-                  SvgPicture.asset('assets/icons/massage.svg', width: 26,),),
-                SizedBox(width: 20,),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(Routes.NOTIFIKASI);
-                  },
-                  child:
-                  SvgPicture.asset('assets/icons/notif.svg', width: 26,),),
-                SizedBox(width: 10,),
-              ],),
-          ],
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'News',
+          style: GoogleFonts.nunito(
+            color: MyColors.appPrimaryColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        body:
-        WebView(
-          initialUrl: 'https://vale.com/in/indonesia/all-news',
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller.complete(webViewController);
-          },
-          javascriptChannels: <JavascriptChannel>{
-            _createOpenLinkJavascriptChannel(context),
-          },
-        )
+        actions: [
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Get.toNamed(Routes.CHAT);
+                },
+                child: SvgPicture.asset(
+                  'assets/icons/massage.svg',
+                  width: 26,
+                ),
+              ),
+              SizedBox(width: 20),
+              InkWell(
+                onTap: () {
+                  Get.toNamed(Routes.NOTIFIKASI);
+                },
+                child: SvgPicture.asset(
+                  'assets/icons/notif.svg',
+                  width: 26,
+                ),
+              ),
+              SizedBox(width: 10),
+            ],
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          WebView(
+            initialUrl: 'https://vale.com/in/indonesia/all-news',
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _controller.complete(webViewController);
+            },
+            onPageStarted: (String url) {
+              setState(() {
+                isLoading = true;  // Show loading indicator
+              });
+            },
+            onPageFinished: (String url) {
+              setState(() {
+                isLoading = false;  // Hide loading indicator
+              });
+            },
+            javascriptChannels: <JavascriptChannel>{
+              _createOpenLinkJavascriptChannel(context),
+            },
+          ),
+          isLoading  // Display loading indicator
+              ? Center(child:
+          Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+          CircularProgressIndicator(color: MyColors.appPrimaryColor,),
+            SizedBox(height: 10,),
+            Text('Memuat Halaman')
+              ]
+            ),
+          )
+              : Stack(),
+        ],
+      ),
     );
   }
 

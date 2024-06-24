@@ -297,7 +297,7 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        _menuItemHelp(() => Get.toNamed(Routes.EMERGENCY), 'assets/icons/help.png', "Emergency\nService"),
+        _menuItemHelp(() => Get.toNamed(Routes.EmergencyBookingView), 'assets/icons/help.png', "Emergency\nService"),
         _menuItem(() => Get.toNamed(Routes.BOOKING), 'assets/icons/bookingservice.png', "Booking\nService"),
         _menuItem(() => Get.toNamed(Routes.BOOKING), 'assets/icons/repear.png', "Repair &\nMaintenance"),
         _menuItem(() => Get.toNamed(Routes.LOKASIBENGKELLY), 'assets/icons/drop.png', "Lokasi\nVale"),

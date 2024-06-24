@@ -168,14 +168,10 @@ class BookingController extends GetxController {
         if (e.response != null) {
           print('Error Response data: ${e.response!.data}');
           print('Error sending request: ${e.message}');
-        } else {
         }
-        Get.snackbar('Gagal Booking', 'Terjadi kesalahan saat Booking',
-            backgroundColor: Colors.redAccent, colorText: Colors.white);
       } catch (e) {
-        isLoading.value = false; // Stop loading
-        print('Error during registration: $e');
-        Get.snackbar('Gagal Booking', 'Terjadi kesalahan saat Booking',
+        isLoading.value = false;
+        Get.snackbar('Anda Sudah Booking', 'Lakukan Booking dengan No Polisi yang berbeda',
             backgroundColor: Colors.redAccent, colorText: Colors.white);
       }
     } else {

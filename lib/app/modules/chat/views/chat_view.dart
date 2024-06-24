@@ -17,8 +17,8 @@ class HelpCenterPage extends StatefulWidget {
 }
 
 class _HelpCenterPageState extends State<HelpCenterPage> {
-  final Completer<WebViewController> _controller =
-  Completer<WebViewController>();
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  bool isLoading = true; // Variable to manage loading state
 
   @override
   Widget build(BuildContext context) {
@@ -28,28 +28,53 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
           statusBarColor: Colors.transparent, // <-- SEE HERE
           statusBarIconBrightness: Brightness.dark, //<-- For Android SEE HERE (dark icons)
           statusBarBrightness: Brightness.light, //<-- For iOS SEE HERE (dark icons)
-          systemNavigationBarColor:  Colors.transparent,
+          systemNavigationBarColor: Colors.transparent,
         ),
         elevation: 0,
-        // leadingWidth: 45,
         actionsIconTheme: const IconThemeData(size: 20),
         backgroundColor: Colors.transparent,
         title: Text(
           'Help Center',
-          style: GoogleFonts.nunito(fontWeight: FontWeight.bold,),
+          style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
         ),
       ),
-        body:
-      WebView(
-      initialUrl: 'https://vale.com/in/',
-      javascriptMode: JavascriptMode.unrestricted,
-      onWebViewCreated: (WebViewController webViewController) {
-        _controller.complete(webViewController);
-      },
-      javascriptChannels: <JavascriptChannel>{
-        _createOpenLinkJavascriptChannel(context),
-      },
-      )
+      body: Stack(
+        children: [
+          WebView(
+            initialUrl: 'https://vale.com/in/',
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _controller.complete(webViewController);
+            },
+            onPageStarted: (String url) {
+              setState(() {
+                isLoading = true; // Show loading indicator
+              });
+            },
+            onPageFinished: (String url) {
+              setState(() {
+                isLoading = false; // Hide loading indicator
+              });
+            },
+            javascriptChannels: <JavascriptChannel>{
+              _createOpenLinkJavascriptChannel(context),
+            },
+          ),
+          isLoading // Display loading indicator
+              ? Center(child:
+          Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(color: MyColors.appPrimaryColor,),
+                SizedBox(height: 10,),
+                Text('Memuat Halaman')
+                ]
+             ),
+          )
+              : Stack(),
+        ],
+      ),
     );
   }
 

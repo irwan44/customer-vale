@@ -25,7 +25,7 @@ class ProfileController extends GetxController {
   var selectedTipeID = 0.obs;
   var selectedTransmisi = ''.obs;
   var selectedKategory = ''.obs;
-  String? imageUrl; // Tambahkan properti untuk URL gambar
+  String? imageUrl;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -148,7 +148,7 @@ class ProfileController extends GetxController {
   }
 
   Future<void> updateProfile(String name, String email, String hp, String alamat) async {
-    String url = 'https://mobile.techthinkhub.id/api/customer-update-profile';
+    String url = 'https://api-vale.techthinkhub.com/api/customer-update-profile';
     final token = Publics.controller.getToken.value ?? '';
 
     dio.FormData formData = dio.FormData.fromMap({
@@ -173,8 +173,10 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200) {
+        Get.offAllNamed(Routes.HOME);
         Get.snackbar('Success', 'Profile updated successfully',
             backgroundColor: Colors.green, colorText: Colors.white);
+
       } else {
         Get.snackbar('Error', 'Failed to update profile',
             backgroundColor: Colors.red, colorText: Colors.white);

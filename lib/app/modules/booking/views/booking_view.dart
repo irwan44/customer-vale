@@ -37,7 +37,7 @@ class BookingViewState extends State<BookingView> {
               width: double.infinity,
               child: Obx(
                     () => SizedBox(
-                  height: 50, // <-- Your height
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: controller.isFormValid()
                         ? () {
@@ -105,7 +105,7 @@ class BookingViewState extends State<BookingView> {
                       children: [
                         FadeInAnimation(
                           delay: 1.8,
-                          child: Text('Jenis Kendaraan', style: GoogleFonts.nunito(),),
+                          child: Text('Kendaraan', style: GoogleFonts.nunito(),),
                         ),
                         FadeInAnimation(
                           delay: 1.8,
@@ -141,7 +141,7 @@ class BookingViewState extends State<BookingView> {
                                   children: [
                                     Text(
                                       controller.selectedTransmisi.value == null
-                                          ? 'Jenis Kendaraan'
+                                          ? 'Pilih Kendaraan'
                                           : '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}',
                                       style: GoogleFonts.nunito(
                                         color: controller.selectedTransmisi.value == null ? Colors.grey : Colors.black,
@@ -158,7 +158,7 @@ class BookingViewState extends State<BookingView> {
                         const SizedBox(height: 10,),
                         FadeInAnimation(
                           delay: 1.8,
-                          child: Text('Lokasi Bengkelly', style: GoogleFonts.nunito(),),
+                          child: Text('Lokasi', style: GoogleFonts.nunito(),),
                         ),
                         FadeInAnimation(
                           delay: 1.8,
@@ -189,7 +189,7 @@ class BookingViewState extends State<BookingView> {
                                   children: [
                                     Text(
                                       controller.selectedLocation.value == null
-                                          ? 'Pilih Lokasi Bengkel'
+                                          ? 'Lokasi'
                                           : '${controller.selectedLocation.value}',
                                       style: GoogleFonts.nunito(
                                         color: controller.selectedLocation.value == null ? Colors.grey : Colors.black,
@@ -206,7 +206,7 @@ class BookingViewState extends State<BookingView> {
                         const SizedBox(height: 10,),
                         FadeInAnimation(
                           delay: 1.8,
-                          child: Text('Pilih Jadwal', style: GoogleFonts.nunito(),),
+                          child: Text('Jadwal Booking', style: GoogleFonts.nunito(),),
                         ),
                         FadeInAnimation(
                           delay: 1.8,
@@ -224,6 +224,9 @@ class BookingViewState extends State<BookingView> {
                                   builder: (BuildContext context) {
                                     return DraggableScrollableSheet(
                                       expand: false,
+                                      initialChildSize: 0.60, //set this as you want
+                                      maxChildSize: 0.60, //set this as you want
+                                      minChildSize: 0.60, //set this as you want
                                       builder: (BuildContext context, ScrollController scrollController) {
                                         return SingleChildScrollView(
                                           controller: scrollController,
@@ -269,7 +272,7 @@ class BookingViewState extends State<BookingView> {
                         const SizedBox(height: 10,),
                         FadeInAnimation(
                           delay: 1.8,
-                          child: Text('Pilih Jasa', style: GoogleFonts.nunito(),),
+                          child: Text('Pilih Jasa Service', style: GoogleFonts.nunito(),),
                         ),
                         FadeInAnimation(
                           delay: 1.8,
@@ -411,73 +414,6 @@ class BookingViewState extends State<BookingView> {
                             : null,
                         onTap: () {
                           controller.selectService(item);
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-          }
-        });
-      },
-    );
-  }
-
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      showDragHandle: true,
-      backgroundColor: Colors.white,
-      context: context,
-      builder: (BuildContext context) {
-        return Obx(() {
-          if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (controller.tipeList.isEmpty) {
-            return const Center(child: Text('No data available'));
-          } else {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Pilih Kendaraan',
-                    style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: controller.tipeList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      DataKendaraan item = controller.tipeList[index];
-                      bool isSelected = item == controller.selectedTransmisi.value;
-                      return ListTile(
-                        title: Row(
-                          children: [
-                            Text(
-                              '${item.merks?.namaMerk}',
-                              style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              ' - ',
-                              style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
-                            ),
-                            ...?item.tipes?.map((tipe) => Text(
-                              '${tipe.namaTipe}',
-                              style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
-                            )).toList(),
-                          ],
-                        ),
-                        subtitle: Text(
-                            'No Polisi: ${item.noPolisi}\nWarna: ${item.warna} - Tahun: ${item.tahun}'
-                        ),
-                        trailing: isSelected
-                            ? const Icon(Icons.check, color: Colors.green)
-                            : null,
-                        onTap: () {
-                          controller.selectTransmisi(item);
                           Navigator.pop(context);
                         },
                       );

@@ -83,8 +83,8 @@ class API {
             return null;
           } else {
             String token = responseData['token'];
-            LocalStorages.setToken(token); // Simpan token
-            Get.snackbar('Selamat Datang', 'Pelanggan Bengkelly',
+            LocalStorages.setToken(token);
+            Get.snackbar('Selamat Datang', 'Vale Indonesia',
                 backgroundColor:Colors.green,
                 colorText: Colors.white
             );
@@ -255,12 +255,6 @@ class API {
       }
     } catch (e) {
       print('Error: $e');
-      Get.snackbar(
-        'Gagal Registrasi',
-        'Terjadi kesalahan saat registrasi: $e',
-        backgroundColor: Colors.redAccent,
-        colorText: Colors.white,
-      );
       throw Exception('Error during registration: $e');
     }
   }
@@ -1002,9 +996,7 @@ class API {
       if (response.statusCode == 404) {
         return;
       }
-
       final obj = HistoryBooking.fromJson(response.data);
-
       if (obj.status == 'Invalid token: Expired') {
         Get.offAllNamed(Routes.SINGIN);
         Get.snackbar(
@@ -1012,12 +1004,11 @@ class API {
           obj.status.toString(),
         );
       }
-
       final bookings = obj.datahistory ?? [];
       final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
       for (final booking in bookings) {
-        if (booking.namaStatus == 'Booking') {
+        if (booking.namaStatus == 'Ditolak') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
             'your channel id',
@@ -1031,7 +1022,167 @@ class API {
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
             0,
-            'Booking Masuk',
+            'Booking Ditolak',
+            booking.namaCabang ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+        if (booking.namaStatus == 'Lunas') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            0,
+            'Booking Lunas',
+            booking.namaCabang ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+        if (booking.namaStatus == 'Invoice') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            0,
+            'Booking Invoice',
+            booking.namaCabang ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+        if (booking.namaStatus == 'Selesai Dikerjakan') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            0,
+            'Booking Selesai Dikerjakan',
+            booking.namaCabang ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+        if (booking.namaStatus == 'PKB TUTUP') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            0,
+            'Booking PKB TUTUP',
+            booking.namaCabang ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+        if (booking.namaStatus == 'PKB') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            0,
+            'Booking PKB',
+            booking.namaCabang ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+        if (booking.namaStatus == 'Estimasi') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            0,
+            'Booking Estimasi',
+            booking.namaCabang ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+        if (booking.namaStatus == 'Diproses') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            0,
+            'Booking Diproses',
+            booking.namaCabang ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+        if (booking.namaStatus == 'Approve') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            0,
+            'Booking Approve',
             booking.namaCabang ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event

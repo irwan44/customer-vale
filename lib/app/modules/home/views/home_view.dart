@@ -76,7 +76,8 @@ class _HomeViewState extends State<HomeView> {
         child:
         FloatingActionButton(
           onPressed: () {
-            Get.toNamed(Routes.EmergencyBookingView);
+
+            Get.toNamed(Routes.BOOKING);
           },
           backgroundColor: Colors.white,
           shape: const RoundedRectangleBorder(
