@@ -92,7 +92,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Serive Proses', style: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.bold),),
+                          Text('Service Proses', style: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.bold),),
                           Container(
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(

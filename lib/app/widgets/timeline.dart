@@ -143,7 +143,6 @@ class _WidgetTimelineState extends State<WidgetTimeline> {
   Widget _buildDetailList1(List<dynamic> items, String titleKey,
       String subtitleKey, String trailingKey, String titleKey2) {
     return Container(
-      // Wrap ListView in a Container to allow dynamic height
       child: ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -167,6 +166,7 @@ class _WidgetTimelineState extends State<WidgetTimeline> {
                   style: GoogleFonts.nunito(
                     fontWeight: FontWeight.bold,
                     color: Colors.green,
+                    fontSize: 13,
                   ),
                 ),
                 SizedBox(width: 5),
@@ -235,10 +235,11 @@ class _WidgetTimelineState extends State<WidgetTimeline> {
                 Text(
                   title,
                   maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.nunito(
                     fontWeight: FontWeight.bold,
-                    fontSize: 15,
                     color: Colors.green,
+                    fontSize: 13,
                   ),
                 ),
                 SizedBox(width: 5),
