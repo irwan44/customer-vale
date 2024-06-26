@@ -116,15 +116,17 @@ class BookingViewState extends State<BookingView> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: GestureDetector(
                               onTap: () {
-                                  showModalBottomSheet(
-                                    showDragHandle: true,
-                                    backgroundColor: Colors.white,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ListKendaraanWidget();
-                                    },
-                                  );
-
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.white,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return FractionallySizedBox(
+                                      heightFactor: 1,
+                                      child: ListKendaraanWidget(),
+                                    );
+                                  },
+                                );
                               },
                               child: Obx(() => InputDecorator(
                                 decoration: InputDecoration(

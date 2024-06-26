@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,6 +27,7 @@ class BookingController extends GetxController {
   var selectedDate = Rx<DateTime?>(null);
   var selectedTime = Rx<TimeOfDay?>(null);
   var tipeList = <DataKendaraan>[].obs;
+  var filteredList = <DataKendaraan>[].obs;
   var serviceList = <JenisServices>[].obs;
   var isLoading = true.obs;
 
@@ -170,8 +170,9 @@ class BookingController extends GetxController {
           print('Error sending request: ${e.message}');
         }
       } catch (e) {
-        isLoading.value = false;
-        Get.snackbar('Anda Sudah Booking', 'Lakukan Booking dengan No Polisi yang berbeda',
+        isLoading.value = false; // Stop loading
+        print('Error during booking: $e');
+        Get.snackbar('Gagal Booking', 'Terjadi kesalahan saat Booking',
             backgroundColor: Colors.redAccent, colorText: Colors.white);
       }
     } else {
@@ -179,7 +180,6 @@ class BookingController extends GetxController {
           backgroundColor: Colors.redAccent, colorText: Colors.white);
     }
   }
-
 
   Future<void> EmergencyService() async {
     if (isFormValidEmergency()) {
@@ -190,7 +190,6 @@ class BookingController extends GetxController {
           return;
         }
         final idcabang = selectedLocationID.value!.geometry!.location!.id.toString();
-
 
         // Logging the values to ensure they are correct
         print('idcabang: $idcabang');
@@ -246,11 +245,26 @@ class BookingController extends GetxController {
     var customerKendaraan = await API.PilihKendaraan();
     if (customerKendaraan != null) {
       tipeList.value = customerKendaraan.datakendaraan ?? [];
+      filteredList.value = tipeList;  // Ensure filteredList is initialized with tipeList
       if (tipeList.isNotEmpty) {
         selectedTransmisi.value = tipeList.first;
       }
     }
     isLoading.value = false;
+  }
+
+  void search(String query) {
+    if (query.isEmpty) {
+      filteredList.value = tipeList;
+    } else {
+      filteredList.value = tipeList.where((item) {
+        return item.noPolisi!.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
+  }
+
+  void resetSearch() {
+    filteredList.value = tipeList;
   }
 
   @override

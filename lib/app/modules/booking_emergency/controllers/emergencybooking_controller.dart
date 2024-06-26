@@ -29,7 +29,7 @@ class EmergencyBookingViewController extends GetxController {
   var tipeList = <DataKendaraan>[].obs;
   var serviceList = <JenisServices>[].obs;
   var isLoading = true.obs;
-
+  var filteredList = <DataKendaraan>[].obs;
   var calendarFormat = CalendarFormat.month.obs;
   var focusedDay = DateTime.now().obs;
   var isDateSelected = false.obs;
@@ -56,7 +56,19 @@ class EmergencyBookingViewController extends GetxController {
       selectedLocation.value = '${firstLocation.name}';
     }
   }
+  void search(String query) {
+    if (query.isEmpty) {
+      filteredList.value = tipeList;
+    } else {
+      filteredList.value = tipeList.where((item) {
+        return item.noPolisi!.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
+  }
 
+  void resetSearch() {
+    filteredList.value = tipeList;
+  }
 
   bool isFormValidEmergency() {
     return selectedTransmisi.value != null &&
@@ -305,13 +317,13 @@ class EmergencyBookingViewController extends GetxController {
     var customerKendaraan = await API.PilihKendaraan();
     if (customerKendaraan != null) {
       tipeList.value = customerKendaraan.datakendaraan ?? [];
+      filteredList.value = tipeList;  // Ensure filteredList is initialized with tipeList
       if (tipeList.isNotEmpty) {
         selectedTransmisi.value = tipeList.first;
       }
     }
     isLoading.value = false;
   }
-
   @override
   void onInit() {
     super.onInit();

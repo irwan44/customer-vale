@@ -139,11 +139,14 @@ class _EmergencyBookingState extends State<EmergencyBooking> {
                             child: GestureDetector(
                               onTap: () {
                                 showModalBottomSheet(
-                                  showDragHandle: true,
+                                  isScrollControlled: true,
                                   backgroundColor: Colors.white,
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return ListKendaraanWidget();
+                                    return FractionallySizedBox(
+                                      heightFactor: 1,
+                                      child: ListKendaraanWidget(),
+                                    );
                                   },
                                 );
                               },

@@ -189,7 +189,7 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
                       children: [
                         FadeInAnimation(
                           delay: 1.8,
-                          child: Text('Jenis Kendaraan', style: GoogleFonts.nunito(),),
+                          child: Text('Kendaraan', style: GoogleFonts.nunito(),),
                         ),
                         FadeInAnimation(
                           delay: 1.8,
@@ -200,15 +200,17 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: GestureDetector(
                               onTap: () {
-                                  showModalBottomSheet(
-                                    showDragHandle: true,
-                                    backgroundColor: Colors.white,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ListKendaraanWidget();
-                                    },
-                                  );
-
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.white,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return FractionallySizedBox(
+                                      heightFactor: 1,
+                                      child: ListKendaraanWidget(),
+                                    );
+                                  },
+                                );
                               },
                               child: Obx(() => InputDecorator(
                                 decoration: InputDecoration(
@@ -225,7 +227,7 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
                                   children: [
                                     Text(
                                       controller.selectedTransmisi.value == null
-                                          ? 'Jenis Kendaraan'
+                                          ? 'Pilih Kendaraan'
                                           : '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}',
                                       style: GoogleFonts.nunito(
                                         color: controller.selectedTransmisi.value == null ? Colors.grey : Colors.black,
