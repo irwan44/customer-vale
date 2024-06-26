@@ -100,8 +100,7 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
           children: [
             Container(
               width: double.infinity,
-              child: Obx(
-                    () => SizedBox(
+              child: Obx( () => SizedBox(
                   height: 50, // <-- Your height
                   child: ElevatedButton(
                     onPressed: controller.isFormValid() && !controller.isLoading.value
@@ -207,7 +206,28 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
                                   builder: (BuildContext context) {
                                     return FractionallySizedBox(
                                       heightFactor: 1,
-                                      child: ListKendaraanWidget(),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 50,),
+                                          Container(
+                                            height: 60,
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Text(
+                                              'Pilih Kendaraan',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: MyColors.appPrimaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListKendaraanWidget(),
+                                          ),
+                                        ],
+                                      ),
                                     );
                                   },
                                 );

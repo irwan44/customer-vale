@@ -123,7 +123,28 @@ class BookingViewState extends State<BookingView> {
                                   builder: (BuildContext context) {
                                     return FractionallySizedBox(
                                       heightFactor: 1,
-                                      child: ListKendaraanWidget(),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 50,),
+                                          Container(
+                                            height: 60,
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Text(
+                                              'Pilih Kendaraan',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: MyColors.appPrimaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListKendaraanWidget(),
+                                          ),
+                                        ],
+                                      ),
                                     );
                                   },
                                 );

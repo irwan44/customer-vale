@@ -20,14 +20,6 @@ class ListKendaraanWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 60,),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Pilih Kendaraan',
-                style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.bold, color: MyColors.appPrimaryColor),
-              ),
-            ),
             Container(
               decoration: BoxDecoration(
                   color: Colors.grey[200],
