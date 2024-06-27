@@ -30,7 +30,7 @@ class _DetailHistoryState extends State<DetailHistory> {
     'Diproses',
     'Estimasi',
     'PKB',
-    'PKB TUTUP',
+    'PKB Tutup',
     'Selesai Dikerjakan',
     'Invoice',
     'Lunas',
@@ -45,7 +45,7 @@ class _DetailHistoryState extends State<DetailHistory> {
     _refreshController = RefreshController();
     super.initState();
     futureGeneralCheckup = API.GCMekanikID(kategoriKendaraanId: '1');
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       loadStatus();
     });
   }
@@ -60,6 +60,16 @@ class _DetailHistoryState extends State<DetailHistory> {
         completedStatuses = savedStatuses;
         currentStatus = completedStatuses.last;
       });
+
+      int lunasIndex = completedStatuses.indexOf('Lunas');
+      if (lunasIndex != -1 && lunasIndex > 0) {
+        for (int i = 0; i < lunasIndex; i++) {
+          if (!completedStatuses.contains(statusList[i])) {
+            completedStatuses.add(statusList[i]);
+          }
+        }
+        completedStatuses.sort((a, b) => statusList.indexOf(a).compareTo(statusList.indexOf(b)));
+      }
     } else {
       setState(() {
         currentStatus = statusList.first;
@@ -87,29 +97,28 @@ class _DetailHistoryState extends State<DetailHistory> {
   }
 
   Color getStatusColor(String status) {
-    switch (status) {
-      case 'Booking':
-        return MyColors.appPrimaryColor;
-      case 'Approve':
-        return MyColors.appPrimaryColor;
-      case 'Diproses':
-        return MyColors.appPrimaryColor;
-      case 'Estimasi':
-        return MyColors.appPrimaryColor;
-      case 'PKB':
-        return MyColors.appPrimaryColor;
-      case 'PKB TUTUP':
-        return MyColors.appPrimaryColor;
-      case 'Selesai Dikerjakan':
-        return MyColors.appPrimaryColor;
-      case 'Invoice':
-        return Colors.green;
-      case 'Lunas':
-        return Colors.blue;
-      case 'Ditolak':
-        return MyColors.redEmergencyMenu;
-      default:
-        return Colors.grey.shade200;
+    bool isCompleted = completedStatuses.contains(status);
+    if (isCompleted) {
+      switch (status) {
+        case 'Booking':
+        case 'Approve':
+        case 'Diproses':
+        case 'Estimasi':
+        case 'PKB':
+        case 'PKB Tutup':
+        case 'Selesai Dikerjakan':
+          return MyColors.appPrimaryColor;
+        case 'Invoice':
+          return Colors.green;
+        case 'Lunas':
+          return Colors.blue;
+        case 'Ditolak':
+          return MyColors.redEmergencyMenu;
+        default:
+          return Colors.grey.shade200;
+      }
+    } else {
+      return Colors.grey.shade200;
     }
   }
 
@@ -196,8 +205,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: statusList.map((status) {
-                                  bool isCompleted =
-                                  completedStatuses.contains(status);
+                                  bool isCompleted = completedStatuses.contains(status);
                                   return Row(
                                     children: [
                                       Container(
@@ -207,26 +215,23 @@ class _DetailHistoryState extends State<DetailHistory> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                           BorderRadius.circular(20),
-                                          color: isCompleted
-                                              ? getStatusColor(status)
-                                              : Colors.grey[200],
+                                          color: getStatusColor(status),
                                         ),
                                         child: Text(
                                           status,
                                           style: TextStyle(
-                                            color: isCompleted
-                                                ? Colors.white
-                                                : Colors.black,
+                                            color: isCompleted ? Colors.white : Colors.black,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
-                                      Icon(
-                                        Icons.check_circle_rounded,
-                                        color: isCompleted
-                                            ? getStatusColor(status)
-                                            : Colors.grey[300],
-                                      )
+                                      if (isCompleted)
+                                        Icon(
+                                          Icons.check_circle_rounded,
+                                          color: getStatusColor(status),
+                                        )
+                                      else
+                                        SizedBox(width: 24), // Placeholder for the check icon if not completed
                                     ],
                                   );
                                 }).toList(),
@@ -247,24 +252,24 @@ class _DetailHistoryState extends State<DetailHistory> {
                                   style: GoogleFonts.nunito(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold)),
-                                Row(children: [
-                                  Text('No Polisi : ',
-                                      style: GoogleFonts.nunito(
-                                          fontWeight: FontWeight.bold)),
-                              Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
+                              Row(children: [
+                                Text('No Polisi : ',
+                                    style: GoogleFonts.nunito(
+                                        fontWeight: FontWeight.bold)),
+                                Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.all(Radius.circular(10))
+                                  ),
+                                  child:
+                                  Text(
+                                    '${nopol}',
+                                    style: GoogleFonts.nunito(
+                                        fontWeight: FontWeight.normal, color: Colors.white),
+                                  ),
                                 ),
-                                child:
-                                Text(
-                                  '${nopol}',
-                                  style: GoogleFonts.nunito(
-                                      fontWeight: FontWeight.normal, color: Colors.white),
-                                ),
-                              ),
-                                ],)
+                              ],)
                             ],
                           ),
                           SizedBox(height: 10),
