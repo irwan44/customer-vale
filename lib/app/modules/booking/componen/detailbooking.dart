@@ -279,10 +279,10 @@ class DetailBookingViewState extends State<DetailBookingView> {
                                         return Center(child: CircularProgressIndicator());
                                       } else if (snapshot.hasError) {
                                         return Center(child: Text('Error: ${snapshot.error}'));
-                                      } else if (!snapshot.hasData || snapshot.data!.dataGeneralCheckUp == null) {
+                                      } else if (!snapshot.hasData || snapshot.data!.data == null) {
                                         return Center(child: Text('No data available'));
                                       }
-                                      final data = snapshot.data!.dataGeneralCheckUp!;
+                                      final data = snapshot.data!.data!;
                                       return ListView.builder(
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),

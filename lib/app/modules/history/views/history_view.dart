@@ -36,8 +36,10 @@ class _HistoryViewState extends State<HistoryView> {
       Routes.DETAILHISTORY,
       arguments: {
         'alamat': booking.alamat ?? '',
+        'id': booking.id.toString(),
         'nama_cabang': booking.namaCabang ?? '',
         'nama_jenissvc': booking.namaJenissvc ?? '',
+        'no_polisi': booking.noPolisi ?? '',
         'nama_status': booking.namaStatus ?? '',
         'jasa': booking.jasa?.map((item) => item.toJson()).toList() ?? [],
         'part': booking.part?.map((item) => item.toJson()).toList() ?? [],

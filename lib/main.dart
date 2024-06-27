@@ -13,7 +13,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  startPollingNotifications();
   await GetStorage.init('token-mekanik');
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -32,18 +31,54 @@ void main() async {
   final InitializationSettings initializationSettings =
   InitializationSettings(android: initializationSettingsAndroid);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  await API();
-  startPollingNotifications();
+  await API.showBookingNotificationsApprove();
+  await API.showBookingNotificationsBooking();
+  await API.showBookingNotificationsDiproses();
+  await API.showBookingNotificationsEstimasi();
+  await API.showBookingNotificationsPKB();
+  await API.showBookingNotificationsPKBTUTUP();
+  await API.showBookingNotificationsSelesaiDikerjakan();
+  await API.showBookingNotificationsInvoice();
+  await API.showBookingNotificationsLunas();
+  await API.showBookingNotificationsDitolak();
+  await startPollingNotificationsApprove();
+  await startPollingNotificationsBooking();
+  await startPollingNotificationsDiproses();
+  await startPollingNotificationsEstimasi();
+  await startPollingNotificationsPKB();
+  await startPollingNotificationsPKBTUTUP();
+  await startPollingNotificationsDikerjakan();
+  await startPollingNotificationsDikerjakan();
+  await startPollingNotificationsInvoice();
+  await startPollingNotificationsLunas();
+  await startPollingNotificationsDitolak();
 
   runApp(const MyApp());
 }
-void startPollingNotifications() {
-  const pollingInterval = Duration(minutes: 1);
 
-  Timer.periodic(pollingInterval, (timer) async {
-    await API.showBookingNotifications();
-  });
+Future<void> startPollingNotificationsApprove() async {
+  await API.showBookingNotificationsApprove();
+}Future<void> startPollingNotificationsBooking() async {
+  await API.showBookingNotificationsBooking();
+}Future<void> startPollingNotificationsDiproses() async {
+  await API.showBookingNotificationsDiproses();
+}Future<void> startPollingNotificationsEstimasi() async {
+  await API.showBookingNotificationsEstimasi();
+}Future<void> startPollingNotificationsPKB() async {
+  await API.showBookingNotificationsPKB();
+}Future<void> startPollingNotificationsPKBTUTUP() async {
+  await API.showBookingNotificationsPKBTUTUP();
+}Future<void> startPollingNotificationsDikerjakan() async {
+  await API.showBookingNotificationsSelesaiDikerjakan();
+}Future<void> startPollingNotificationsInvoice() async {
+  await API.showBookingNotificationsInvoice();
+}Future<void> startPollingNotificationsLunas() async {
+  await API.showBookingNotificationsLunas();
+}Future<void> startPollingNotificationsDitolak() async {
+  await API.showBookingNotificationsDitolak();
 }
+
+
 
 class MyHttpOverrides extends HttpOverrides {
   @override

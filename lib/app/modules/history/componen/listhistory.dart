@@ -57,6 +57,12 @@ class ListHistory extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
+                      '${booking.id}',
+                      style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.transparent,),
+                    ),
+                    Text(
                       '${booking.namaJenissvc}',
                       style: GoogleFonts.nunito(
                           fontWeight: FontWeight.bold,

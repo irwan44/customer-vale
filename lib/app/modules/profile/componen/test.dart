@@ -28,10 +28,10 @@ class _GeneralCheckupScreenState extends State<GeneralCheckupScreen> {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.dataGeneralCheckUp == null) {
+          } else if (!snapshot.hasData || snapshot.data!.data == null) {
             return Center(child: Text('No data available'));
           }
-          final data = snapshot.data!.dataGeneralCheckUp!;
+          final data = snapshot.data!.data!;
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {

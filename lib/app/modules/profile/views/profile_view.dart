@@ -33,7 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     _refreshController =
-        RefreshController(); // we have to use initState because this part of the app have to restart
+        RefreshController();
     super.initState();
   }
   @override
@@ -577,7 +577,6 @@ class _ProfileViewState extends State<ProfileView> {
     // Bersihkan cache untuk setiap data yang Anda simpan dalam cache
     LocalStorages.deleteToken();
 
-    // Navigasi ke halaman login
     Get.offAllNamed(Routes.SINGIN);
   }
   _onLoading() {

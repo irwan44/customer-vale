@@ -7,7 +7,7 @@ import 'componen/my_font_size.dart';
 import 'componen/my_style.dart';
 import 'customcard.dart';
 
-class WidgetTimeline extends StatelessWidget {
+class WidgetTimelinetitle extends StatelessWidget {
   final IconData? icon;
   final Color? bgcolor;
   final String? title1;
@@ -18,7 +18,7 @@ class WidgetTimeline extends StatelessWidget {
   final List<dynamic>? jasa;
   final List<dynamic>? part;
 
-  const WidgetTimeline({
+  const WidgetTimelinetitle({
     Key? key,
     this.icon,
     this.bgcolor,
@@ -44,7 +44,7 @@ class WidgetTimeline extends StatelessWidget {
                   shadow: false,
                   height: 50,
                   width: 50,
-                  bgColor: (jasa != null && jasa!.isNotEmpty) || (part != null && part!.isNotEmpty) ? MyColors.appPrimaryColor : Colors.grey.shade200,
+                  bgColor: MyColors.appPrimaryColor,
                   borderRadius: BorderRadius.circular(100),
                   child: Center(child: Icon(icon, color: Colors.white)),
                 ),
@@ -103,7 +103,10 @@ class WidgetTimeline extends StatelessWidget {
                     bgColor: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(15),
                     padding: EdgeInsets.all(15),
-                    child: _buildDetailList1(jasa!, 'nama_jasa', 'qty_jasa', 'tgl', 'harga'),
+                    child: SizedBox(
+                      height: (jasa?.length ?? 0) * 200.0,
+                      child: _buildDetailList1(jasa!, 'nama_jasa', 'qty_jasa', 'tgl', 'harga'),
+                    ),
                   ),
                 if (showCard2 ?? false && part != null)
                   CustomCard(
@@ -111,7 +114,10 @@ class WidgetTimeline extends StatelessWidget {
                     bgColor: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(15),
                     padding: EdgeInsets.all(15),
-                    child: _buildDetailList2(part!, 'nama_sparepart', 'kode_sparepart', 'tgl', 'harga'),
+                    child: SizedBox(
+                      height: (part?.length ?? 0) * 200.0,
+                      child: _buildDetailList2(part!, 'nama_sparepart', 'kode_sparepart', 'tgl', 'harga'),
+                    ),
                   ),
               ],
             ),
@@ -122,24 +128,25 @@ class WidgetTimeline extends StatelessWidget {
   }
 
   Widget _buildDetailList1(List<dynamic> items, String titleKey, String subtitleKey, String trailingKey, String titleKey2) {
-    return Column(
-      children: items.map((item) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
         final title = item[titleKey]?.toString() ?? '';
         final subtitle = item[subtitleKey]?.toString() ?? '';
         final trailing = item[trailingKey]?.toString() ?? '';
         final additionalTitle = item[titleKey2]?.toString() ?? '';
 
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
+        return ListTile(
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                maxLines: 5,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
@@ -167,6 +174,12 @@ class WidgetTimeline extends StatelessWidget {
                   ),
                 ],
               ),
+            ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               SizedBox(height: 20),
               Text(
                 'Tanggal: $trailing',
@@ -179,38 +192,36 @@ class WidgetTimeline extends StatelessWidget {
                   fontSize: 15,
                 ),
               ),
-              Divider(color: Colors.grey,)
             ],
           ),
         );
-      }).toList(),
+      },
     );
   }
 
-
   Widget _buildDetailList2(List<dynamic> items, String titleKey, String subtitleKey, String trailingKey, String titleKey2) {
-    return Column(
-      children: items.map((item) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
         final title = item[titleKey]?.toString() ?? '';
         final subtitle = item[subtitleKey]?.toString() ?? '';
         final trailing = item[trailingKey]?.toString() ?? '';
         final additionalTitle = item[titleKey2]?.toString() ?? '';
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+
+        return ListTile(
+          title: Row(
             children: [
               Text(
                 title,
-                maxLines: 5,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
                   color: Colors.green,
-                  fontSize: 15,
+                  fontSize: 13,
                 ),
               ),
               SizedBox(width: 5),
@@ -222,7 +233,12 @@ class WidgetTimeline extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 5),
+            ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               Text(
                 'Tanggal: $trailing',
                 style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
@@ -234,11 +250,10 @@ class WidgetTimeline extends StatelessWidget {
                   fontSize: 15,
                 ),
               ),
-              Divider(color: Colors.grey,)
             ],
           ),
         );
-      }).toList(),
+      },
     );
   }
 }

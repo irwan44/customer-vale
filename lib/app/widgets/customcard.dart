@@ -51,12 +51,8 @@ class CustomCard extends StatelessWidget {
                 blurRadius: shadowBlur,
               ),
           ]),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius == null ? BorderRadius.circular(25) : borderRadius!,
-        ),
+      child: Container(
         margin: EdgeInsets.zero,
-        elevation: 0,
         color: Colors.transparent,
         child: Material(
           color: Colors.transparent,

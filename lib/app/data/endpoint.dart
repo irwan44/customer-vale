@@ -968,7 +968,7 @@ class API {
 
       final obj = GeneralCheckup.fromJson(response.data);
 
-      if (obj.dataGeneralCheckUp == null) {
+      if (obj.data == null) {
         throw Exception("Data general checkup kosong.");
       }
 
@@ -978,8 +978,7 @@ class API {
     }
   }
   //Beda
-
-  static Future<void> showBookingNotifications() async {
+  static Future<void> showBookingNotificationsDitolak() async {
     try {
       final token = Publics.controller.getToken.value ?? '';
       var data = {"token": token};
@@ -1021,13 +1020,47 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking Ditolak',
-            booking.namaCabang ?? '',
+            10,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
         }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  static Future<void> showBookingNotificationsLunas() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
         if (booking.namaStatus == 'Lunas') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
@@ -1041,13 +1074,47 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking Lunas',
-            booking.namaCabang ?? '',
+            9,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
         }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  static Future<void> showBookingNotificationsInvoice() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
         if (booking.namaStatus == 'Invoice') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
@@ -1061,13 +1128,47 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking Invoice',
-            booking.namaCabang ?? '',
+            8,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
         }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  static Future<void> showBookingNotificationsSelesaiDikerjakan() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
         if (booking.namaStatus == 'Selesai Dikerjakan') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
@@ -1081,13 +1182,47 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking Selesai Dikerjakan',
-            booking.namaCabang ?? '',
+            7,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
         }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  static Future<void> showBookingNotificationsPKBTUTUP() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
         if (booking.namaStatus == 'PKB TUTUP') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
@@ -1101,13 +1236,47 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking PKB TUTUP',
-            booking.namaCabang ?? '',
+            6,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
         }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  static Future<void> showBookingNotificationsPKB() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
         if (booking.namaStatus == 'PKB') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
@@ -1121,13 +1290,47 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking PKB',
-            booking.namaCabang ?? '',
+            5,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
         }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  static Future<void> showBookingNotificationsEstimasi() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
         if (booking.namaStatus == 'Estimasi') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
@@ -1141,13 +1344,47 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking Estimasi',
-            booking.namaCabang ?? '',
+            4,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
         }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  static Future<void> showBookingNotificationsDiproses() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
         if (booking.namaStatus == 'Diproses') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
@@ -1161,13 +1398,103 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking Diproses',
-            booking.namaCabang ?? '',
+            3,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
         }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  static Future<void> showBookingNotificationsBooking() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
+        if (booking.namaStatus == 'Booking') {
+          const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+            'your channel id',
+            'your channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            sound: RawResourceAndroidNotificationSound('sounds'),
+          );
+          const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+          await flutterLocalNotificationsPlugin.show(
+            2,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
+            platformChannelSpecifics,
+            payload: 'item x', // optional, used for onClick event
+          );
+        }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  //Beda
+
+  static Future<void> showBookingNotificationsApprove() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetHistory,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+      final obj = HistoryBooking.fromJson(response.data);
+      if (obj.status == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.status.toString(),
+          obj.status.toString(),
+        );
+      }
+      final bookings = obj.datahistory ?? [];
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+      for (final booking in bookings) {
         if (booking.namaStatus == 'Approve') {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
           AndroidNotificationDetails(
@@ -1181,9 +1508,9 @@ class API {
           const NotificationDetails platformChannelSpecifics =
           NotificationDetails(android: androidPlatformChannelSpecifics);
           await flutterLocalNotificationsPlugin.show(
-            0,
-            'Booking Approve',
-            booking.namaCabang ?? '',
+            1,
+            'Booking ${booking.namaStatus ?? ''}',
+            booking.namaJenissvc ?? '',
             platformChannelSpecifics,
             payload: 'item x', // optional, used for onClick event
           );
