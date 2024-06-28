@@ -170,9 +170,8 @@ class BookingController extends GetxController {
           print('Error sending request: ${e.message}');
         }
       } catch (e) {
-        isLoading.value = false; // Stop loading
-        print('Error during booking: $e');
-        Get.snackbar('Gagal Booking', 'Terjadi kesalahan saat Booking',
+        isLoading.value = false;
+        Get.snackbar('Gagal Booking', 'Kendaraan anda masih dalam proses Booking, selesaikan dahulu Booking kendaraan anda',
             backgroundColor: Colors.redAccent, colorText: Colors.white);
       }
     } else {

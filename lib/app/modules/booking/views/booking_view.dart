@@ -247,9 +247,9 @@ class BookingViewState extends State<BookingView> {
                                   builder: (BuildContext context) {
                                     return DraggableScrollableSheet(
                                       expand: false,
-                                      initialChildSize: 0.60, //set this as you want
-                                      maxChildSize: 0.60, //set this as you want
-                                      minChildSize: 0.60, //set this as you want
+                                      initialChildSize: 0.65,
+                                      maxChildSize: 0.65,
+                                      minChildSize: 0.65,
                                       builder: (BuildContext context, ScrollController scrollController) {
                                         return SingleChildScrollView(
                                           controller: scrollController,
