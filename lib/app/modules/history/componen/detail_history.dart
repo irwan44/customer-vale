@@ -39,6 +39,8 @@ class _DetailHistoryState extends State<DetailHistory> {
   List<String> completedStatuses = [];
   String currentStatus = '';
   late String id;
+  final ScrollController _scrollController = ScrollController();
+  final Map<String, GlobalKey> statusKeys = {};
 
   @override
   void initState() {
@@ -48,6 +50,10 @@ class _DetailHistoryState extends State<DetailHistory> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       loadStatus();
     });
+
+    for (var status in statusList) {
+      statusKeys[status] = GlobalKey();
+    }
   }
 
   void loadStatus() async {
@@ -83,6 +89,9 @@ class _DetailHistoryState extends State<DetailHistory> {
     if (!completedStatuses.contains(newStatus)) {
       updateStatus(newStatus);
     }
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      scrollToStatus(newStatus);
+    });
   }
 
   void updateStatus(String newStatus) async {
@@ -94,6 +103,17 @@ class _DetailHistoryState extends State<DetailHistory> {
     setState(() {
       currentStatus = newStatus;
     });
+  }
+
+  void scrollToStatus(String status) {
+    final key = statusKeys[status];
+    if (key != null && key.currentContext != null) {
+      Scrollable.ensureVisible(
+        key.currentContext!,
+        duration: Duration(milliseconds: 500),
+        alignment: 0.5,
+      );
+    }
   }
 
   Color getStatusColor(String status) {
@@ -125,7 +145,6 @@ class _DetailHistoryState extends State<DetailHistory> {
   @override
   Widget build(BuildContext context) {
     final arguments = Get.arguments;
-    final String status = arguments['nama_status'];
     final String alamat = arguments['alamat'];
     final String restarea = arguments['nama_cabang'];
     final String nopol = arguments['no_polisi'];
@@ -133,16 +152,6 @@ class _DetailHistoryState extends State<DetailHistory> {
     final String namajenissvc = arguments['nama_jenissvc'];
     final List<dynamic> jasa = arguments['jasa'];
     final List<dynamic> part = arguments['part'];
-    Map<String, String> cabangImageAssets = {
-      'Bengkelly Rest Area KM 379A': 'assets/logo/379a.jpg',
-      'Bengkelly Rest Area KM 228A': 'assets/logo/228a.jpg',
-      'Bengkelly Rest Area KM 389B': 'assets/logo/389b.jpg',
-      'Bengkelly Rest Area KM 575B': 'assets/logo/575b.jpg',
-      'Bengkelly Rest Area KM 319B': 'assets/logo/319b.jpg',
-    };
-    Color statusColor = getStatusColor(status ?? '');
-    String imageAsset = cabangImageAssets[arguments['nama_cabang']] ?? 'assets/logo/logo_vale.png';
-
     double screenWidth = MediaQuery.of(context).size.width;
     double padding = screenWidth * 0.02;
 
@@ -193,7 +202,6 @@ class _DetailHistoryState extends State<DetailHistory> {
                               style: GoogleFonts.nunito(
                                   fontSize: 20, fontWeight: FontWeight.bold, color: MyColors.appPrimaryColor),
                             ),
-
                             SizedBox(height: 10),
                             Text('Status Proses',
                                 style: GoogleFonts.nunito(
@@ -202,11 +210,13 @@ class _DetailHistoryState extends State<DetailHistory> {
                             SizedBox(height: 10),
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
+                              controller: _scrollController,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: statusList.map((status) {
                                   bool isCompleted = completedStatuses.contains(status);
                                   return Row(
+                                    key: statusKeys[status],
                                     children: [
                                       Container(
                                         margin: EdgeInsets.all(5),
@@ -304,7 +314,6 @@ class _DetailHistoryState extends State<DetailHistory> {
                     ],
                   ),
                 ),
-
                 if (namajenissvc == 'General Check UP/P2H')
                   Container(
                     padding: EdgeInsets.all(10),
