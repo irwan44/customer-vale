@@ -10,6 +10,7 @@ import '../modules/authorization/componen/new_password.dart';
 import '../modules/authorization/componen/otp_verrifikasi.dart';
 import '../modules/authorization/componen/signup_next.dart';
 import '../modules/authorization/componen/signup_page.dart';
+import '../modules/authorization/componen/ubah_password.dart';
 import '../modules/authorization/views/authorization_view.dart';
 import '../modules/booking/bindings/booking_binding.dart';
 import '../modules/booking/componen/berhasil_booking.dart';
@@ -245,6 +246,12 @@ class AppPages {
       transition: Transition.downToUp,
       name: _Paths.EmergencyBookingView,
       page: () => EmergencyBookingView(),
+      binding: BookingBinding(),
+    ),
+    GetPage(
+      transition: Transition.downToUp,
+      name: _Paths.UBAHPASSWORD,
+      page: () => UbahPasswordPage(),
       binding: BookingBinding(),
     ),
   ];

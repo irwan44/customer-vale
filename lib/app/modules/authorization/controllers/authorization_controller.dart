@@ -19,6 +19,9 @@ class AuthorizationController extends GetxController {
   final VerikasiEmailController = TextEditingController();
   final VerikasiPassowrdBaruController = TextEditingController();
   final VerikasiPassowrdBarulagiController = TextEditingController();
+  final UbahLamaPasswordController = TextEditingController();
+  final UbahBaruPasswordController = TextEditingController();
+  final UbahConfirmBaruPasswordController = TextEditingController();
 
   final nopolController = TextEditingController();
   final hpController = TextEditingController();

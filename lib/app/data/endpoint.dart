@@ -21,6 +21,7 @@ import 'data_endpoint/lokasilistrik.dart';
 import 'data_endpoint/merekkendaraan.dart';
 import 'data_endpoint/news.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data_endpoint/profielpic.dart';
 import 'data_endpoint/profile.dart';
 import 'data_endpoint/register.dart';
 import 'data_endpoint/tipekendaraan.dart';
@@ -54,6 +55,7 @@ class API {
   static const _PostLupaPassword = '$_baseUrl/customer/kirim-otp';
   static const _PostOTP = '$_baseUrl/customer/verify-otp';
   static const _PostResetPassword = '$_baseUrl/customer/reset-password';
+  static const _PostUbahPassword = '$_baseUrl/customer/ubah-password';
 
 
   static Future<String?> login({required String email, required String password}) async {
@@ -322,6 +324,66 @@ class API {
     }
   }
   //Beda
+  static Future<OTP> UbahPasswordID({
+    required String currentpassword,
+    required String newpassword,
+    required String confirmpasswordnew,
+  }) async {
+    final data = {
+      "current_password": currentpassword,
+      "new_password": newpassword,
+      "confirm_password": confirmpasswordnew,
+    };
+
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      print('Token: $token');
+      print('Request Data: $data');
+
+      var response = await Dio().post(
+        _PostUbahPassword,
+        data: data,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response data: ${response.data}');
+
+      if (response.statusCode == 200) {
+        final obj = OTP.fromJson(response.data);
+
+        // Check for specific message in response
+        if (obj.message == 'Invalid token: Expired') {
+          Get.offAllNamed(Routes.SINGIN);
+          Get.snackbar(
+            obj.message.toString(),
+            obj.message.toString(),
+            backgroundColor: Colors.yellow,
+            colorText: Colors.black,
+          );
+        } else {
+          Get.snackbar(
+            'Ubah Password Berhasil',
+            'Password baru anda sudah bisa digunakan',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+          Get.offAllNamed(Routes.HOME);
+        }
+        return obj;
+      } else {
+        throw Exception('Failed to register booking: ${response.statusMessage}');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error during registration: $e');
+    }
+  }
   //Beda
   static Future<OTP> OTPID({
     required String otp,
@@ -345,7 +407,6 @@ class API {
           },
         ),
       );
-
       print('Response status: ${response.statusCode}');
       print('Response data: ${response.data}');
 
@@ -801,6 +862,40 @@ class API {
       }
 
       final obj = Profile.fromJson(response.data);
+
+      if (obj.message == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.message.toString(),
+          obj.message.toString(),
+        );
+      }
+      return obj;
+    } catch (e) {
+      throw e;
+    }
+  }
+  //Beda
+  //Beda
+  static Future<ProfilePIC> profileiDPIC() async {
+    final token = Publics.controller.getToken.value ?? '';
+    var data = {"token": token};
+    try {
+      var response = await Dio().get(
+        _Getprofile,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return ProfilePIC(status: false, message: "Tidak ada data booking untuk karyawan ini.");
+      }
+
+      final obj = ProfilePIC.fromJson(response.data);
 
       if (obj.message == 'Invalid token: Expired') {
         Get.offAllNamed(Routes.SINGIN);

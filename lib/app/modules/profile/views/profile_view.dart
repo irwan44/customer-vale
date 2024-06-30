@@ -12,12 +12,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../componen/ButtonSubmitWidget.dart';
 import '../../../componen/color.dart';
 import '../../../componen/profile_shimmer.dart';
-import '../../../componen/spleshscreen.dart';
+import '../../../data/data_endpoint/profielpic.dart';
 import '../../../data/data_endpoint/profile.dart';
 import '../../../data/endpoint.dart';
 import '../../../data/localstorage.dart';
 import '../../../routes/app_pages.dart';
-import '../../booking/controllers/booking_controller.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends StatefulWidget {
@@ -30,6 +29,9 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final ProfileController controller = Get.put(ProfileController());
   late RefreshController _refreshController;
+  bool _showProfilePic = true;
+  bool _showProfile = true;
+
   @override
   void initState() {
     _refreshController =
@@ -93,23 +95,129 @@ class _ProfileViewState extends State<ProfileView> {
 
 
   Widget _Profile() {
-    return  InkWell(
-      onTap: () {
-        Get.toNamed(Routes.EDITPROFILE);
-      },
-      child:
-      Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.only(left: 20, right: 20),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: MyColors.card,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child:
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (_showProfilePic)
+            FutureBuilder<ProfilePIC>(
+              future: API.profileiDPIC(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return ProfileLoadingShimmer();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  if (snapshot.hasData && snapshot.data!.status == true) {
+                    final nama = snapshot.data!.dataPic?.nama ?? "";
+                    final email = snapshot.data!.dataPic?.email ?? "";
+                    final hp = snapshot.data!.dataPic?.noTelepon ?? "noTelepon : Belum diisi";
+
+                    if (nama.isEmpty && nama.isEmpty && email.isEmpty && hp.isEmpty) {
+                      return SizedBox(height: 0,);
+                    }
+                    if (nama.isNotEmpty) {
+                      return  InkWell(
+                          onTap: () {
+                            // Get.toNamed(Routes.EDITPROFILE);
+                          },
+                          child:
+                          Container(
+                              padding: EdgeInsets.all(20),
+                              margin: EdgeInsets.only(left: 20, right: 20),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: MyColors.appPrimaryColor,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child:
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      ClipOval(
+                                        child: Image.asset(
+                                          'assets/images/profile.png',
+                                          width: 70,
+                                          height: 70,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: double.infinity,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    nama,
+                                                    style: GoogleFonts.nunito(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  SvgPicture.asset(
+                                                    'assets/icons/edit.svg',
+                                                    width: 26,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Text(
+                                              email,
+                                              style: GoogleFonts.nunito(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              hp,
+                                              style: GoogleFonts.nunito(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(height: 10,),
+                                            Container(
+                                              width: double.infinity,
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(10)
+                                              ),
+                                              child: Text(
+                                                'Anda Adalah PIC',
+                                                style: GoogleFonts.nunito(
+                                                  color: MyColors.appPrimaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                          )
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  } else {
+                    return SizedBox();
+                  }
+                }
+              },
+            ),
+          if (_showProfile)
             FutureBuilder<Profile>(
               future: API.profileiD(),
               builder: (context, snapshot) {
@@ -118,96 +226,109 @@ class _ProfileViewState extends State<ProfileView> {
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  if (snapshot.data != null) {
+                  if (snapshot.hasData && snapshot.data!.status == true) {
                     final gambar = snapshot.data!.data?.gambar ?? "";
                     final nama = snapshot.data!.data?.nama ?? "";
                     final email = snapshot.data!.data?.email ?? "";
                     final hp = snapshot.data!.data?.hp ?? "";
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            ClipOval(
-                              child: gambar != null
-                                  ? Image.network(
-                                gambar,
-                                width: 70,
-                                height: 70,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/profile.png',
-                                    width: 70,
-                                    height: 70,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                              )
-                                  : Image.asset(
-                                'assets/images/profile.png',
-                                width: 70,
-                                height: 70,
-                                fit: BoxFit.cover,
+                    if (gambar.isEmpty && nama.isEmpty && email.isEmpty && hp.isEmpty) {
+                      return SizedBox();
+                    }
+
+                    if (gambar.isNotEmpty) {
+                      return InkWell(
+                          onTap: () {
+                            Get.toNamed(Routes.EDITPROFILE);
+                          },
+                          child:
+                          Container(
+                              padding: EdgeInsets.all(20),
+                              margin: EdgeInsets.only(left: 20, right: 20),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: MyColors.appPrimaryColor,
+                                borderRadius: BorderRadius.circular(20),
                               ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child:
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    width: double.infinity,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          nama,
-                                          style: GoogleFonts.nunito(
-                                            color: MyColors.appPrimaryColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                  Row(
+                                    children: [
+                                      ClipOval(
+                                        child: Image.network(
+                                          gambar,
+                                          width: 70,
+                                          height: 70,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/profile.png',
+                                              width: 70,
+                                              height: 70,
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
                                         ),
-                                        SvgPicture.asset(
-                                          'assets/icons/edit.svg',
-                                          width: 26,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: double.infinity,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    nama,
+                                                    style: GoogleFonts.nunito(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  SvgPicture.asset(
+                                                    'assets/icons/edit.svg',
+                                                    width: 26,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Text(
+                                              email,
+                                              style: GoogleFonts.nunito(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              hp,
+                                              style: GoogleFonts.nunito(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    email,
-                                    style: GoogleFonts.nunito(
-                                      color: MyColors.appPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    hp,
-                                    style: GoogleFonts.nunito(
-                                      color: MyColors.appPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
+                              ))
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
                   } else {
-                    return const Text('Tidak ada data');
+                    return SizedBox();
                   }
                 }
               },
             ),
-
-          ],
-        ),
-      ),
-    );
+        ],
+      );
   }
 
   Widget _setting() {
@@ -230,7 +351,7 @@ class _ProfileViewState extends State<ProfileView> {
           children: [
             InkWell(
               onTap: () {
-                // Get.toNamed(Routes.UBAHPASSWORD);
+                Get.toNamed(Routes.UBAHPASSWORD);
               },
               child:
               Row(
