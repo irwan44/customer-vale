@@ -159,15 +159,19 @@ class BookingViewState extends State<BookingView> {
                                   filled: true,
                                   fillColor: Colors.transparent,
                                 ),
-                                child: Row(
+                                child:  Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      controller.selectedTransmisi.value == null
+                                      (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
                                           ? 'Pilih Kendaraan'
+                                          : (controller.selectedTransmisiPIC.value != null)
+                                          ? '${controller.selectedTransmisiPIC.value!.namaMerk} - ${controller.selectedTransmisiPIC.value!.namaTipe ?? ''}'
                                           : '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}',
                                       style: GoogleFonts.nunito(
-                                        color: controller.selectedTransmisi.value == null ? Colors.grey : Colors.black,
+                                        color: (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
+                                            ? Colors.grey
+                                            : Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

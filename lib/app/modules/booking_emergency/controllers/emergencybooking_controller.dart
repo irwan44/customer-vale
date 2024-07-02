@@ -10,7 +10,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../../data/data_endpoint/bookingcustomer.dart';
 import '../../../data/data_endpoint/customkendaraan.dart';
+import '../../../data/data_endpoint/kendaraanpic.dart';
 import '../../../data/data_endpoint/lokasi.dart' as LokasiEndpoint;
 import '../../../data/data_endpoint/lokasi.dart';
 import '../../../data/data_endpoint/jenisservice.dart';
@@ -21,12 +23,16 @@ import '../componen/berhasil_booking.dart';
 class EmergencyBookingViewController extends GetxController {
   var Keluhan = ''.obs;
   var selectedTransmisi = Rx<DataKendaraan?>(null);
+
   var selectedService = Rx<JenisServices?>(null);
   var selectedLocation = Rx<String?>(null);
   var selectedLocationID = Rx<DataLokasi?>(null);
   var selectedDate = Rx<DateTime?>(null);
   var selectedTime = Rx<TimeOfDay?>(null);
   var tipeList = <DataKendaraan>[].obs;
+  var tipeListPIC = <Kendaraanpic>[].obs;
+  var filteredListPIC = <Kendaraanpic>[].obs;
+  var selectedTransmisiPIC = Rx<Kendaraanpic?>(null);
   var serviceList = <JenisServices>[].obs;
   var isLoading = true.obs;
   var filteredList = <DataKendaraan>[].obs;
@@ -47,6 +53,13 @@ class EmergencyBookingViewController extends GetxController {
         selectedLocation.value != null &&
             _currentPosition != null &&
         Keluhan.value.isNotEmpty;
+  }
+  bool isFormValidpic() {
+    return
+      selectedTransmisiPIC.value != null &&
+          selectedLocation.value != null &&
+          _currentPosition != null &&
+          Keluhan.value.isNotEmpty;
   }
   Future<void> fetchAndSetDefaultLocation() async {
     var lokasi = await API.LokasiBengkellyID();
@@ -75,7 +88,11 @@ class EmergencyBookingViewController extends GetxController {
         selectedLocation.value != null &&
         Keluhan.value.isNotEmpty;
   }
-
+  bool isFormValidEmergencypic() {
+    return selectedTransmisiPIC.value != null &&
+        selectedLocation.value != null &&
+        Keluhan.value.isNotEmpty;
+  }
   void selectTransmisi(DataKendaraan value) {
     selectedTransmisi.value = value;
   }
@@ -203,105 +220,78 @@ class EmergencyBookingViewController extends GetxController {
   }
 
   Future<void> EmergencyServiceVale() async {
-    if (isFormValidEmergency()) {
-      isLoading.value = true;
-      try {
-        if (Keluhan.value == null || selectedTransmisi.value?.id == null) {
-          Get.snackbar('Gagal Emergency Service', 'Informasi lokasi tidak lengkap',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-          return;
-        }
-
-        final idcabang = selectedLocationID.value?.geometry?.location?.id?.toString();
-
-        if (idcabang == null) {
-          Get.snackbar('Gagal Emergency Service', 'ID lokasi tidak tersedia',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-          return;
-        }
-
-        final registerResponse = await API.EmergencyServiceValeID(
-          idcabang: idcabang,
-          keluhan: Keluhan.value!,
-          idkendaraan: selectedTransmisi.value!.id.toString(),
-          location: locationController.text ?? '',
-        );
-
-        if (registerResponse != null && registerResponse.status == true) {
-          Get.offAllNamed(Routes.HOME);
-        } else {
-          Get.snackbar('Error', 'Terjadi kesalahan saat Emergency Service',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-        }
-      } on DioError catch (e) {
-        if (e.response != null) {
-          print('Error Response data: ${e.response!.data}');
-          print('Error sending request: ${e.message}');
-        } else {
-          print('Error sending request: ${e.message}');
-        }
-        Get.snackbar('Gagal emergency Service', 'Kendaraan anda sudah Terdaftar Sebelumnya',
-            backgroundColor: Colors.redAccent, colorText: Colors.white);
-      } catch (e) {
-        print('Error during emergency Service: $e');
-        Get.snackbar('Gagal emergency Service', 'Kendaraan anda sudah Terdaftar Sebelumnya',
-            backgroundColor: Colors.redAccent, colorText: Colors.white);
-      } finally {
-        isLoading.value = false;
-      }
+    // Condition 1: Handle emergency service for PIC
+    if (isFormValidEmergencypic()) {
+      await _handleEmergencyService(
+        idKendaraan: selectedTransmisiPIC.value!.id.toString(),
+        isPIC: true,
+      );
     } else {
-      Get.snackbar('Gagal Emergency Service', 'Semua bidang harus diisi',
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+    }
+
+    // Condition 2: Handle emergency service for regular customer
+    if (isFormValidEmergency()) {
+      await _handleEmergencyService(
+        idKendaraan: selectedTransmisi.value!.id.toString(),
+        isPIC: false,
+      );
+    } else {
     }
   }
 
-  Future<void> EmergencyService() async {
-    if (isFormValidEmergency()) {
-      try {
-        if (Keluhan.value == null || selectedTransmisi.value!.id == null) {
-          Get.snackbar('Gagal Emergency Service', 'Informasi lokasi tidak lengkap',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-          return;
-        }
-        final idcabang = selectedLocationID.value!.geometry!.location!.id.toString();
-
-
-        // Logging the values to ensure they are correct
-        print('idcabang: $idcabang');
-        print('keluhan: ${Keluhan.value}');
-        print('berita: ${'Untuk emergency Service'}');
-        print('idkendaraan: ${selectedTransmisi.value!.id}');
-
-        // Sending the request
-        final registerResponse = await API.EmergencyServiceID(
-          idcabang: idcabang,
-          keluhan: Keluhan.value,
-          berita: 'Untuk emergency Service',
-          idkendaraan: selectedTransmisi.value!.id.toString(),
-        );
-
-        if (registerResponse != null && registerResponse.status == true) {
-          Get.offAllNamed(Routes.HOME);
-        } else {
-          Get.snackbar('Error', 'Terjadi kesalahan saat Emergency Service',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-        }
-      } on DioError catch (e) {
-        if (e.response != null) {
-          print('Error Response data: ${e.response!.data}');
-          print('Error sending request: ${e.message}');
-        } else {
-          print('Error sending request: ${e.message}');
-        }
-        Get.snackbar('Gagal emergency Service', 'Terjadi kesalahan saat Emergency Service',
-            backgroundColor: Colors.redAccent, colorText: Colors.white);
-      } catch (e) {
-      }
-    } else {
-      Get.snackbar('Gagal Emergency Service', 'Semua bidang harus diisi',
+  Future<void> _handleEmergencyService({String? idKendaraan, required bool isPIC}) async {
+    if (Keluhan.value == null || idKendaraan == null) {
+      Get.snackbar('Gagal Emergency Service', 'Informasi lokasi tidak lengkap',
           backgroundColor: Colors.redAccent, colorText: Colors.white);
+      return;
+    }
+
+    isLoading.value = true;
+
+    try {
+      final idcabang = selectedLocationID.value?.geometry?.location?.id?.toString();
+
+      if (idcabang == null) {
+        Get.snackbar('Gagal Emergency Service', 'ID lokasi tidak tersedia',
+            backgroundColor: Colors.redAccent, colorText: Colors.white);
+        return;
+      }
+
+      final registerResponse = await API.EmergencyServiceValeID(
+        idcabang: idcabang,
+        keluhan: Keluhan.value!,
+        idkendaraan: idKendaraan,
+        location: locationController.text ?? '',
+      );
+
+      if (registerResponse != null && registerResponse.status == true) {
+        Get.offAllNamed(Routes.HOME);
+      } else {
+        Get.snackbar('Error', 'Terjadi kesalahan saat Emergency Service',
+            backgroundColor: Colors.redAccent, colorText: Colors.white);
+      }
+    } on DioError catch (e) {
+      _handleDioError(e);
+    } catch (e) {
+      print('Error during emergency Service: $e');
+      Get.snackbar('Gagal emergency Service', 'Kendaraan anda sudah Terdaftar Sebelumnya',
+          backgroundColor: Colors.redAccent, colorText: Colors.white);
+    } finally {
+      isLoading.value = false;
     }
   }
+
+  void _handleDioError(DioError e) {
+    if (e.response != null) {
+      print('Error Response data: ${e.response!.data}');
+      print('Error sending request: ${e.message}');
+    } else {
+      print('Error sending request: ${e.message}');
+    }
+    Get.snackbar('Gagal emergency Service', 'Kendaraan anda sudah Terdaftar Sebelumnya',
+        backgroundColor: Colors.redAccent, colorText: Colors.white);
+  }
+
 
   Future<void> fetchServiceList() async {
     isLoading.value = true;
@@ -314,16 +304,41 @@ class EmergencyBookingViewController extends GetxController {
 
   Future<void> fetchTipeList() async {
     isLoading.value = true;
-    var customerKendaraan = await API.PilihKendaraan();
-    if (customerKendaraan != null) {
-      tipeList.value = customerKendaraan.datakendaraan ?? [];
-      filteredList.value = tipeList;  // Ensure filteredList is initialized with tipeList
-      if (tipeList.isNotEmpty) {
-        selectedTransmisi.value = tipeList.first;
+    try {
+      var customerKendaraan = await API.PilihKendaraan();
+      var KendaraanPIC = await API.PilihKendaraanPIC();
+      if (KendaraanPIC != null) {
+        tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
+        filteredListPIC.value = tipeListPIC.value;
+
+        if (tipeListPIC.isNotEmpty) {
+          selectedTransmisiPIC.value = tipeListPIC.first;
+        }
+      } else {
+        tipeListPIC.value = [];
+        filteredListPIC.value = [];
+        selectedTransmisiPIC.value = null;
       }
+
+      if (customerKendaraan != null) {
+        tipeList.value = customerKendaraan.datakendaraan ?? [];
+        filteredList.value = tipeList.value;
+
+        if (tipeList.isNotEmpty) {
+          selectedTransmisi.value = tipeList.first;
+        }
+      } else {
+        tipeList.value = [];
+        filteredList.value = [];
+        selectedTransmisi.value = null;
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
+
   @override
   void onInit() {
     super.onInit();

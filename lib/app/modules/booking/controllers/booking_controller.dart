@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:customer_bengkelly/app/data/data_endpoint/kendaraanpic.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../data/data_endpoint/bookingcustomer.dart';
 import '../../../data/data_endpoint/customkendaraan.dart';
+import '../../../data/data_endpoint/kendaraanpic.dart';
+import '../../../data/data_endpoint/kendaraanpic.dart';
 import '../../../data/data_endpoint/lokasi.dart' as LokasiEndpoint;
 import '../../../data/data_endpoint/lokasi.dart';
 import '../../../data/data_endpoint/jenisservice.dart';
@@ -30,7 +33,9 @@ class BookingController extends GetxController {
   var filteredList = <DataKendaraan>[].obs;
   var serviceList = <JenisServices>[].obs;
   var isLoading = true.obs;
-
+  var tipeListPIC = <Kendaraanpic>[].obs;
+  var filteredListPIC = <Kendaraanpic>[].obs;
+  var selectedTransmisiPIC = Rx<Kendaraanpic?>(null);
   var calendarFormat = CalendarFormat.month.obs;
   var focusedDay = DateTime.now().obs;
   var isDateSelected = false.obs;
@@ -239,19 +244,43 @@ class BookingController extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> fetchTipeListPIC() async {
+    isLoading.value = true;
+    var KendaraanPIC = await API.PilihKendaraanPIC();
+    if (KendaraanPIC != null) {
+      tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
+      filteredListPIC.value = tipeListPIC.value;
+
+      if (tipeListPIC.isNotEmpty) {
+        selectedTransmisiPIC.value = tipeListPIC.first;
+      }
+    }
+
+    isLoading.value = false;
+  }
   Future<void> fetchTipeList() async {
     isLoading.value = true;
     var customerKendaraan = await API.PilihKendaraan();
+    var KendaraanPIC = await API.PilihKendaraanPIC();
+    if (KendaraanPIC != null) {
+      // Assuming KendaraanPIC.dataPic?.kendaraan is a List<Kendaraan>
+      tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
+      filteredListPIC.value = tipeListPIC.value; // Assign the observable value
+
+      if (tipeListPIC.isNotEmpty) {
+        selectedTransmisiPIC.value = tipeListPIC.first;
+      }
+    }
+
     if (customerKendaraan != null) {
       tipeList.value = customerKendaraan.datakendaraan ?? [];
-      filteredList.value = tipeList;  // Ensure filteredList is initialized with tipeList
+      filteredList.value = tipeList;
       if (tipeList.isNotEmpty) {
         selectedTransmisi.value = tipeList.first;
       }
     }
     isLoading.value = false;
   }
-
   void search(String query) {
     if (query.isEmpty) {
       filteredList.value = tipeList;
@@ -270,6 +299,7 @@ class BookingController extends GetxController {
   void onInit() {
     super.onInit();
     fetchTipeList();
+    fetchTipeListPIC();
     fetchServiceList();
     checkPermissions();
     checkPermissions1();

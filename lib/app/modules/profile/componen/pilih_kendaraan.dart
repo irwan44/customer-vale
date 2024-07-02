@@ -79,15 +79,6 @@ class _PilihKendaraanState extends State<PilihKendaraan> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        // Obx(
-        //       () => Text(
-        //     'Pilih Kendaraan: ${controller.selectedTransmisi.value?.merks?.namaMerk ?? ''}',
-        //     style: GoogleFonts.nunito(
-        //       color: MyColors.appPrimaryColor,
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        // ),
         centerTitle: false,
       ),
       body: SmartRefresher(

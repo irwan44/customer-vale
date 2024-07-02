@@ -100,58 +100,61 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
           children: [
             Container(
               width: double.infinity,
-              child: Obx( () => SizedBox(
-                  height: 50, // <-- Your height
-                  child: ElevatedButton(
-                    onPressed: controller.isFormValid() && !controller.isLoading.value
-                        ? () {
-                      controller.EmergencyServiceVale();
-                    }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: controller.isFormValid()
-                          ? MyColors.appPrimaryColor
-                          : Colors.grey,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      elevation: 4.0,
+              child: Obx(() => SizedBox(
+                height: 50, // <-- Your height
+                child: ElevatedButton(
+                  onPressed: (controller.isFormValidpic() && !controller.isLoading.value) ||
+                      (controller.isFormValid() && !controller.isLoading.value)
+                      ? () {
+                    controller.EmergencyServiceVale();
+                  }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: (controller.isFormValidpic() || controller.isFormValid())
+                        ? MyColors.appPrimaryColor
+                        : Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: controller.isLoading.value
-                        ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(
+                    elevation: 4.0,
+                  ),
+                  child: controller.isLoading.value
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Loading...',
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Loading...',
-                          style: GoogleFonts.nunito(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                      ),
+                    ],
+                  )
+                      : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 10),
+                      Text(
+                        'Booking Sekarang',
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                      ],
-                    )
-                        : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 10),
-                        Text(
-                          'Booking Sekarang',
-                          style: GoogleFonts.nunito(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              )),
             ),
+
+
 
           ],
         ),
@@ -246,11 +249,15 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      controller.selectedTransmisi.value == null
+                                      (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
                                           ? 'Pilih Kendaraan'
+                                          : (controller.selectedTransmisiPIC.value != null)
+                                          ? '${controller.selectedTransmisiPIC.value!.namaMerk} - ${controller.selectedTransmisiPIC.value!.namaTipe ?? ''}'
                                           : '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}',
                                       style: GoogleFonts.nunito(
-                                        color: controller.selectedTransmisi.value == null ? Colors.grey : Colors.black,
+                                        color: (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
+                                            ? Colors.grey
+                                            : Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

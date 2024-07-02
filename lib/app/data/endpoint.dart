@@ -16,6 +16,7 @@ import 'data_endpoint/generalcekup.dart';
 import 'data_endpoint/history.dart';
 import 'data_endpoint/jenisservice.dart';
 import 'data_endpoint/kategorikendaraan.dart';
+import 'data_endpoint/kendaraanpic.dart';
 import 'data_endpoint/lokasi.dart';
 import 'data_endpoint/lokasilistrik.dart';
 import 'data_endpoint/merekkendaraan.dart';
@@ -808,6 +809,41 @@ class API {
       throw e;
     }
   }
+  //Beda
+  static Future<KendaraanPIC> PilihKendaraanPIC() async {
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      var data = {"token": token};
+      var response = await Dio().get(
+        _GetCustomKendaraan,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        queryParameters: data,
+      );
+
+      if (response.statusCode == 404) {
+        return KendaraanPIC(status: false, message: "Tidak ada data booking untuk karyawan ini.");
+      }
+
+      final obj = KendaraanPIC.fromJson(response.data);
+
+      if (obj.message == 'Invalid token: Expired') {
+        Get.offAllNamed(Routes.SINGIN);
+        Get.snackbar(
+          obj.message.toString(),
+          obj.message.toString(),
+        );
+      }
+
+      return obj;
+    } catch (e) {
+      throw e;
+    }
+  }
+//Beda
   //Beda
   static Future<CustomerKendaraan> PilihKendaraan() async {
     try {
