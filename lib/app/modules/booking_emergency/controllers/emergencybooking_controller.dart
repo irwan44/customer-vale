@@ -220,22 +220,18 @@ class EmergencyBookingViewController extends GetxController {
   }
 
   Future<void> EmergencyServiceVale() async {
-    // Condition 1: Handle emergency service for PIC
     if (isFormValidEmergencypic()) {
       await _handleEmergencyService(
         idKendaraan: selectedTransmisiPIC.value!.id.toString(),
         isPIC: true,
       );
-    } else {
     }
 
-    // Condition 2: Handle emergency service for regular customer
     if (isFormValidEmergency()) {
       await _handleEmergencyService(
         idKendaraan: selectedTransmisi.value!.id.toString(),
         isPIC: false,
       );
-    } else {
     }
   }
 
@@ -257,12 +253,21 @@ class EmergencyBookingViewController extends GetxController {
         return;
       }
 
+      // Print data to be sent to API
+      print('Data to be sent to API:');
+      print('ID Cabang: $idcabang');
+      print('Keluhan: ${Keluhan.value}');
+      print('ID Kendaraan: $idKendaraan');
+      print('Location: ${locationController.text ?? ''}');
+
       final registerResponse = await API.EmergencyServiceValeID(
         idcabang: idcabang,
-        keluhan: Keluhan.value!,
+        keluhan: Keluhan.value,
         idkendaraan: idKendaraan,
         location: locationController.text ?? '',
       );
+
+      print('API Response: $registerResponse');
 
       if (registerResponse != null && registerResponse.status == true) {
         Get.offAllNamed(Routes.HOME);
@@ -280,6 +285,7 @@ class EmergencyBookingViewController extends GetxController {
       isLoading.value = false;
     }
   }
+
 
   void _handleDioError(DioError e) {
     if (e.response != null) {
