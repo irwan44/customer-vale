@@ -95,241 +95,230 @@ class _ProfileViewState extends State<ProfileView> {
 
 
   Widget _Profile() {
-    return
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (_showProfilePic)
-            FutureBuilder<ProfilePIC>(
-              future: API.profileiDPIC(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return ProfileLoadingShimmer();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  if (snapshot.hasData && snapshot.data!.status == true) {
-                    final nama = snapshot.data!.dataPic?.nama ?? "";
-                    final email = snapshot.data!.dataPic?.email ?? "";
-                    final hp = snapshot.data!.dataPic?.noTelepon ?? "noTelepon : Belum diisi";
-
-                    if (nama.isEmpty && nama.isEmpty && email.isEmpty && hp.isEmpty) {
-                      return SizedBox(height: 0,);
-                    }
-                    if (nama.isNotEmpty) {
-                      return  InkWell(
-                          onTap: () {
-                            // Get.toNamed(Routes.EDITPROFILE);
-                          },
-                          child:
-                          Container(
-                              padding: EdgeInsets.all(20),
-                              margin: EdgeInsets.only(left: 20, right: 20),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: MyColors.appPrimaryColor,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child:
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      ClipOval(
-                                        child: Image.asset(
-                                          'assets/images/profile.png',
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: double.infinity,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    nama,
-                                                    style: GoogleFonts.nunito(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  SvgPicture.asset(
-                                                    'assets/icons/edit.svg',
-                                                    width: 26,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Text(
-                                              email,
-                                              style: GoogleFonts.nunito(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              hp,
-                                              style: GoogleFonts.nunito(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(height: 10,),
-                                            Container(
-                                              width: double.infinity,
-                                              padding: EdgeInsets.all(5),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(10)
-                                              ),
-                                              child: Text(
-                                                'Anda Adalah PIC',
-                                                style: GoogleFonts.nunito(
-                                                  color: MyColors.appPrimaryColor,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )
-                          )
-                      );
-                    } else {
-                      return SizedBox.shrink();
-                    }
-                  } else {
-                    return SizedBox();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_showProfilePic)
+          FutureBuilder<ProfilePIC>(
+            future: API.profileiDPIC(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return ProfileLoadingShimmer();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                if (snapshot.hasData && snapshot.data!.status == true) {
+                  final nama = snapshot.data!.dataPic?.nama;
+                  if (nama == null) {
+                    return SizedBox.shrink(); // Hide FutureBuilder if nama is null
                   }
-                }
-              },
-            ),
-          if (_showProfile)
-            FutureBuilder<Profile>(
-              future: API.profileiD(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return ProfileLoadingShimmer();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  if (snapshot.hasData && snapshot.data!.status == true) {
-                    final gambar = snapshot.data!.data?.gambar ?? "";
-                    final nama = snapshot.data!.data?.nama ?? "";
-                    final email = snapshot.data!.data?.email ?? "";
-                    final hp = snapshot.data!.data?.hp ?? "";
-                    if (gambar.isEmpty && nama.isEmpty && email.isEmpty && hp.isEmpty) {
-                      return SizedBox();
-                    }
+                  final email = snapshot.data!.dataPic?.email ?? "";
+                  final hp = snapshot.data!.dataPic?.noTelepon ?? "noTelepon : Belum diisi";
 
-                    if (gambar.isNotEmpty) {
-                      return InkWell(
-                          onTap: () {
-                            Get.toNamed(Routes.EDITPROFILE);
-                          },
-                          child:
-                          Container(
-                              padding: EdgeInsets.all(20),
-                              margin: EdgeInsets.only(left: 20, right: 20),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: MyColors.appPrimaryColor,
-                                borderRadius: BorderRadius.circular(20),
+                  return InkWell(
+                    onTap: () {
+                      // Get.toNamed(Routes.EDITPROFILE);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: MyColors.appPrimaryColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              ClipOval(
+                                child: Image.asset(
+                                  'assets/images/profile.png',
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              child:
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      ClipOval(
-                                        child: Image.network(
-                                          gambar,
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Image.asset(
-                                              'assets/images/profile.png',
-                                              width: 70,
-                                              height: 70,
-                                              fit: BoxFit.cover,
-                                            );
-                                          },
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            nama,
+                                            style: GoogleFonts.nunito(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/icons/edit.svg',
+                                            width: 26,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text(
+                                      email,
+                                      style: GoogleFonts.nunito(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      hp,
+                                      style: GoogleFonts.nunito(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        'Anda Adalah PIC',
+                                        style: GoogleFonts.nunito(
+                                          color: MyColors.appPrimaryColor,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(width: 10),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: double.infinity,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    nama,
-                                                    style: GoogleFonts.nunito(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  SvgPicture.asset(
-                                                    'assets/icons/edit.svg',
-                                                    width: 26,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Text(
-                                              email,
-                                              style: GoogleFonts.nunito(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              hp,
-                                              style: GoogleFonts.nunito(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ))
-                      );
-                    } else {
-                      return SizedBox.shrink();
-                    }
-                  } else {
-                    return SizedBox();
-                  }
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return SizedBox.shrink();
                 }
-              },
-            ),
-        ],
-      );
+              }
+            },
+          ),
+        if (_showProfile)
+          FutureBuilder<Profile>(
+            future: API.profileiD(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return ProfileLoadingShimmer();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                if (snapshot.hasData && snapshot.data!.status == true) {
+                  final gambar = snapshot.data!.data?.gambar ?? "";
+                  final nama = snapshot.data!.data?.nama;
+                  if (nama == null) {
+                    return SizedBox.shrink(); // Hide FutureBuilder if nama is null
+                  }
+                  final email = snapshot.data!.data?.email ?? "";
+                  final hp = snapshot.data!.data?.hp ?? "";
+
+                  return InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.EDITPROFILE);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: MyColors.appPrimaryColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              ClipOval(
+                                child: Image.network(
+                                  gambar,
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/profile.png',
+                                      width: 70,
+                                      height: 70,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            nama,
+                                            style: GoogleFonts.nunito(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/icons/edit.svg',
+                                            width: 26,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text(
+                                      email,
+                                      style: GoogleFonts.nunito(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      hp,
+                                      style: GoogleFonts.nunito(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              }
+            },
+          ),
+      ],
+    );
   }
+
 
   Widget _setting() {
     return Container(

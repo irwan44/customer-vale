@@ -39,6 +39,11 @@ class BookingController extends GetxController {
   var calendarFormat = CalendarFormat.month.obs;
   var focusedDay = DateTime.now().obs;
   var isDateSelected = false.obs;
+  Future<void> fetchData() async {
+    await fetchTipeList();
+    await fetchTipeListPIC();
+    await fetchServiceList();
+  }
 
   late GoogleMapController mapController;
   var currentPosition = Rxn<Position>();
@@ -49,6 +54,14 @@ class BookingController extends GetxController {
 
   bool isFormValid() {
     return selectedTransmisi.value != null &&
+        selectedService.value != null &&
+        selectedLocation.value != null &&
+        selectedDate.value != null &&
+        selectedTime.value != null &&
+        Keluhan.value.isNotEmpty;
+  }
+  bool isFormValidpic() {
+    return selectedTransmisiPIC.value != null &&
         selectedService.value != null &&
         selectedLocation.value != null &&
         selectedDate.value != null &&
@@ -117,123 +130,91 @@ class BookingController extends GetxController {
   }
 
   Future<void> BookingID() async {
+
     if (isFormValid()) {
-      try {
-        isLoading.value = true; // Start loading
-        if (selectedLocationID.value == null || selectedLocationID.value!.geometry == null || selectedLocationID.value!.geometry!.location == null) {
-          Get.snackbar('Gagal Booking', 'Informasi lokasi tidak lengkap',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-          isLoading.value = false; // Stop loading
-          return;
-        }
-        final idcabang = selectedLocationID.value!.geometry!.location!.id.toString();
+      await _handleBooking(isPIC: false);
+    } else {
+      Get.snackbar('Gagal Booking', 'Semua bidang harus diisi',
+          backgroundColor: Colors.redAccent, colorText: Colors.white);
+    }
 
-        final DateTime selectedDateTime = DateTime(
-          selectedDate.value!.year,
-          selectedDate.value!.month,
-          selectedDate.value!.day,
-          selectedTime.value!.hour,
-          selectedTime.value!.minute,
-        );
-
-        print('idcabang: $idcabang');
-        print('idjenissvc: ${selectedService.value!.id}');
-        print('keluhan: ${Keluhan.value}');
-        print('tglbooking: ${DateFormat('dd/MM/yyyy').format(selectedDateTime)}');
-        print('jambooking: ${DateFormat('HH:mm').format(selectedDateTime)}');
-        print('idkendaraan: ${selectedTransmisi.value!.id}');
-
-        // Sending the request
-        final Response = await API.BookingID(
-          idcabang: idcabang,
-          idjenissvc: selectedService.value!.id.toString(),
-          keluhan: Keluhan.value,
-          tglbooking: DateFormat('dd/MM/yyyy').format(selectedDateTime).toString(),
-          jambooking: DateFormat('HH:mm').format(selectedDateTime).toString(),
-          idkendaraan: selectedTransmisi.value!.id.toString(),
-        );
-
-        isLoading.value = false; // Stop loading
-
-        if (Response != null && Response.status == true) {
-          Get.snackbar(
-            'Berhasil',
-            'Booking Service akan segera di layani',
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-          );
-          Get.offAllNamed(Routes.HOME);
-        } else {
-          print(Response);
-          Get.snackbar('Error', 'Terjadi kesalahan saat Booking',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-        }
-      } on DioError catch (e) {
-        isLoading.value = false; // Stop loading
-        if (e.response != null) {
-          print('Error Response data: ${e.response!.data}');
-          print('Error sending request: ${e.message}');
-        }
-      } catch (e) {
-        isLoading.value = false;
-        Get.snackbar('Gagal Booking', 'Kendaraan anda masih dalam proses Booking, selesaikan dahulu Booking kendaraan anda',
-            backgroundColor: Colors.redAccent, colorText: Colors.white);
-      }
+    if (isFormValidpic()) {
+      await _handleBooking(isPIC: true);
     } else {
       Get.snackbar('Gagal Booking', 'Semua bidang harus diisi',
           backgroundColor: Colors.redAccent, colorText: Colors.white);
     }
   }
 
-  Future<void> EmergencyService() async {
-    if (isFormValidEmergency()) {
-      try {
-        if (Keluhan.value == null || selectedTransmisi.value!.id == null) {
-          Get.snackbar('Gagal Emergency Service', 'Informasi lokasi tidak lengkap',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-          return;
-        }
-        final idcabang = selectedLocationID.value!.geometry!.location!.id.toString();
-
-        // Logging the values to ensure they are correct
-        print('idcabang: $idcabang');
-        print('keluhan: ${Keluhan.value}');
-        print('berita: ${'Untuk emergency Service'}');
-        print('idkendaraan: ${selectedTransmisi.value!.id}');
-
-        // Sending the request
-        final registerResponse = await API.EmergencyServiceID(
-          idcabang: idcabang,
-          keluhan: Keluhan.value,
-          berita: 'Untuk emergency Service',
-          idkendaraan: selectedTransmisi.value!.id.toString(),
-        );
-
-        if (registerResponse != null && registerResponse.status == true) {
-          Get.offAllNamed(Routes.HOME);
-        } else {
-          Get.snackbar('Error', 'Terjadi kesalahan saat Emergency Service',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
-        }
-      } on DioError catch (e) {
-        if (e.response != null) {
-          print('Error Response data: ${e.response!.data}');
-          print('Error sending request: ${e.message}');
-        } else {
-          print('Error sending request: ${e.message}');
-        }
-        Get.snackbar('Gagal emergency Service', 'Terjadi kesalahan saat Emergency Service',
+  Future<void> _handleBooking({required bool isPIC}) async {
+    try {
+      isLoading.value = true; // Start loading
+      if (selectedLocationID.value == null || selectedLocationID.value!.geometry == null || selectedLocationID.value!.geometry!.location == null) {
+        Get.snackbar('Gagal Booking', 'Informasi lokasi tidak lengkap',
             backgroundColor: Colors.redAccent, colorText: Colors.white);
-      } catch (e) {
-        print('Error during emergency Service: $e');
-        Get.snackbar('Gagal emergency Service', 'Terjadi kesalahan saat Emergency Service',
+        isLoading.value = false; // Stop loading
+        return;
+      }
+
+      final idcabang = selectedLocationID.value!.geometry!.location!.id.toString();
+      final DateTime selectedDateTime = DateTime(
+        selectedDate.value!.year,
+        selectedDate.value!.month,
+        selectedDate.value!.day,
+        selectedTime.value!.hour,
+        selectedTime.value!.minute,
+      );
+
+      final idKendaraan = isPIC ? selectedTransmisiPIC.value!.id.toString() : selectedTransmisi.value!.id.toString();
+
+      // Print data to be sent to API
+      print('Data to be sent to API:');
+      print('ID Cabang: $idcabang');
+      print('ID Jenis Svc: ${selectedService.value!.id}');
+      print('Keluhan: ${Keluhan.value}');
+      print('Tanggal Booking: ${DateFormat('dd/MM/yyyy').format(selectedDateTime)}');
+      print('Jam Booking: ${DateFormat('HH:mm').format(selectedDateTime)}');
+      print('ID Kendaraan: $idKendaraan');
+
+      // Sending the request
+      final response = await API.BookingID(
+        idcabang: idcabang,
+        idjenissvc: selectedService.value!.id.toString(),
+        keluhan: Keluhan.value,
+        tglbooking: DateFormat('dd/MM/yyyy').format(selectedDateTime).toString(),
+        jambooking: DateFormat('HH:mm').format(selectedDateTime).toString(),
+        idkendaraan: idKendaraan,
+      );
+
+      isLoading.value = false; // Stop loading
+
+      if (response != null && response.status == true) {
+        Get.snackbar(
+          'Berhasil',
+          'Booking Service akan segera di layani',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        Get.offAllNamed(Routes.HOME);
+      } else {
+        print(response);
+        Get.snackbar('Error', 'Terjadi kesalahan saat Booking',
             backgroundColor: Colors.redAccent, colorText: Colors.white);
       }
-    } else {
-      Get.snackbar('Gagal Emergency Service', 'Semua bidang harus diisi',
+    } on DioError catch (e) {
+      isLoading.value = false; // Stop loading
+      if (e.response != null) {
+        print('Error Response data: ${e.response!.data}');
+        print('Error sending request: ${e.message}');
+      }
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar('Gagal Booking', 'Kendaraan anda masih dalam proses Booking, selesaikan dahulu Booking kendaraan anda',
           backgroundColor: Colors.redAccent, colorText: Colors.white);
     }
   }
+
+
 
   Future<void> fetchServiceList() async {
     isLoading.value = true;
@@ -263,7 +244,7 @@ class BookingController extends GetxController {
     var customerKendaraan = await API.PilihKendaraan();
     var KendaraanPIC = await API.PilihKendaraanPIC();
     if (KendaraanPIC != null) {
-      // Assuming KendaraanPIC.dataPic?.kendaraan is a List<Kendaraan>
+
       tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
       filteredListPIC.value = tipeListPIC.value; // Assign the observable value
 

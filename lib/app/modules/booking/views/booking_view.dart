@@ -35,40 +35,58 @@ class BookingViewState extends State<BookingView> {
           children: [
             Container(
               width: double.infinity,
-              child: Obx(
-                    () => SizedBox(
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: controller.isFormValid()
-                        ? () {
-                      Get.toNamed(Routes.DETAILBOOKING);
-                    }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: controller.isFormValid()
-                          ? MyColors.appPrimaryColor
-                          : Colors.grey,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      elevation: 4.0,
+              child: Obx(() => SizedBox(
+                height: 50, // <-- Your height
+                child: ElevatedButton(
+                  onPressed: (controller.isFormValidpic() && !controller.isLoading.value) ||
+                      (controller.isFormValid() && !controller.isLoading.value)
+                      ? () {
+                    Get.toNamed(Routes.DETAILBOOKING);
+                  }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: (controller.isFormValidpic() || controller.isFormValid())
+                        ? MyColors.appPrimaryColor
+                        : Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 10,),
-                        Text(
-                          'Booking Sekarang',
-                          style: GoogleFonts.nunito(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                    elevation: 4.0,
+                  ),
+                  child: controller.isLoading.value
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Loading...',
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  )
+                      : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 10),
+                      Text(
+                        'Booking Sekarang',
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              )),
             ),
           ],
         ),
@@ -166,7 +184,7 @@ class BookingViewState extends State<BookingView> {
                                       (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
                                           ? 'Pilih Kendaraan'
                                           : (controller.selectedTransmisiPIC.value != null)
-                                          ? '${controller.selectedTransmisiPIC.value!.namaMerk} - ${controller.selectedTransmisiPIC.value!.namaTipe ?? ''}'
+                                          ? '${controller.selectedTransmisiPIC.value!.namaMerk} - ${controller.selectedTransmisiPIC.value!.namaTipe ?? ''} - ${controller.selectedTransmisiPIC.value!.noPolisi ?? ''}'
                                           : '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}',
                                       style: GoogleFonts.nunito(
                                         color: (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)

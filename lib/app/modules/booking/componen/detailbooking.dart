@@ -151,19 +151,52 @@ class DetailBookingViewState extends State<DetailBookingView> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Text('${controller.selectedTransmisi.value!.merks?.namaMerk}',style: GoogleFonts.nunito(fontWeight: FontWeight.bold),),
-                                              Text('${controller.selectedTransmisi.value!.noPolisi}'),
-                                              Row(children: [
-                                                Text('${controller.selectedTransmisi.value!.warna}'),
-                                                Text(' - '),
-                                                Text('Tahun ${controller.selectedTransmisi.value!.tahun}'),
-                                              ],)
-                                            ],
-                                          ),
+                                          if (controller.selectedTransmisiPIC.value != null)
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${controller.selectedTransmisiPIC.value!.namaMerk} - ${controller.selectedTransmisiPIC.value!.namaTipe}',
+                                                  style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                  Text('Nomor Polisi :'),
+                                                    SizedBox(width: 10,),
+                                                    Text('${controller.selectedTransmisiPIC.value!.noPolisi}'),
+                                                  ],
+                                                ),
+
+                                                Row(
+                                                  children: [
+                                                    Text('${controller.selectedTransmisiPIC.value!.warna}'),
+                                                    Text(' - '),
+                                                    Text('Tahun ${controller.selectedTransmisiPIC.value!.tahun}'),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          // Kondisi untuk non-PIC
+                                          if (controller.selectedTransmisi.value != null)
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${controller.selectedTransmisi.value!.merks?.namaMerk}',
+                                                  style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                                                ),
+                                                Text('${controller.selectedTransmisi.value!.noPolisi}'),
+                                                Row(
+                                                  children: [
+                                                    Text('${controller.selectedTransmisi.value!.warna}'),
+                                                    Text(' - '),
+                                                    Text('Tahun ${controller.selectedTransmisi.value!.tahun}'),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                         ],
                                       ),
                                     )),

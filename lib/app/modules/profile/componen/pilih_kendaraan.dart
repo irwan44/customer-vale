@@ -21,8 +21,11 @@ class _PilihKendaraanState extends State<PilihKendaraan> {
 
   @override
   void initState() {
-    _refreshController = RefreshController();
     super.initState();
+    _refreshController = RefreshController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _onRefresh();
+    });
   }
 
   @override
@@ -81,17 +84,25 @@ class _PilihKendaraanState extends State<PilihKendaraan> {
         ),
         centerTitle: false,
       ),
-      body: SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        header: const WaterDropHeader(),
-        onLoading: _onLoading,
-        onRefresh: _onRefresh,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ListKendaraanWidget(),
-        ),
-      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return SmartRefresher(
+            controller: _refreshController,
+            enablePullDown: true,
+            header: const WaterDropHeader(),
+            onLoading: _onLoading,
+            onRefresh: _onRefresh,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ListKendaraanWidget(),
+            ),
+          );
+        }
+      }),
     );
   }
 
@@ -99,8 +110,9 @@ class _PilihKendaraanState extends State<PilihKendaraan> {
     _refreshController.loadComplete();
   }
 
-  void _onRefresh() {
+  void _onRefresh() async {
     HapticFeedback.lightImpact();
+    await controller.fetchData(); // Memuat ulang data
     setState(() {
       _refreshController.refreshCompleted();
     });

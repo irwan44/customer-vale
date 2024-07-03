@@ -17,7 +17,6 @@ import '../modules/booking/componen/berhasil_booking.dart';
 import '../modules/booking/componen/detailbooking.dart';
 import '../modules/booking/componen/select_maps.dart';
 import '../modules/booking/views/booking_view.dart';
-import '../modules/booking/views/emergency_view.dart';
 import '../modules/booking_emergency/views/emergencybooking_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
@@ -124,11 +123,6 @@ class AppPages {
       transition: Transition.downToUp,
       name: _Paths.SELECTBOOKING,
       page: () => SelectBooking(),
-      binding: BookingBinding(),
-    ),
-    GetPage(
-      name: _Paths.EMERGENCY,
-      page: () => EmergencyBooking(),
       binding: BookingBinding(),
     ),
     GetPage(
