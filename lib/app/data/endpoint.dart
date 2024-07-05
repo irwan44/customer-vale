@@ -197,6 +197,72 @@ class API {
     }
   }
   //Beda
+  static Future<BookingCustomer?> BookingIDPIC({
+    required String idcabang,
+    required String idjenissvc,
+    required String keluhan,
+    required String tglbooking,
+    required String jambooking,
+    required String idkendaraan,
+  }) async {
+    final data = {
+      "id_cabang": idcabang,
+      "id_jenissvc": idjenissvc,
+      "keluhan": keluhan,
+      "tgl_booking": tglbooking,
+      "jam_booking": jambooking,
+      "id_kendaraan": idkendaraan,
+    };
+
+    try {
+      final token = Publics.controller.getToken.value ?? '';
+      print('Token: $token');
+      print('Request Data: $data');
+
+      var response = await Dio().post(
+        _postCreateBooking,
+        data: data,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response data: ${response.data}');
+
+      if (response.statusCode == 200) {
+        final obj = BookingCustomer.fromJson(response.data);
+
+        // Check for specific message in response
+        if (obj.message == 'Invalid token: Expired') {
+          Get.offAllNamed(Routes.SUKSESBOOKING);
+          Get.snackbar(
+            obj.message.toString(),
+            obj.message.toString(),
+            backgroundColor: Colors.yellow,
+            colorText: Colors.black,
+          );
+        } else {
+        }
+        return obj;
+      } else {
+        Get.snackbar(
+          'Gagal',
+          'Mungkin alamat email anda tidak terdaftar',
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error during registration: $e');
+    }
+  }
+  //Beda
+  //Beda
   static Future<BookingCustomer?> BookingID({
     required String idcabang,
     required String idjenissvc,

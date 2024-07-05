@@ -1,11 +1,17 @@
 class BookingCustomer {
+  NotifikasiBerhasilDikirim? notifikasiBerhasilDikirim;
   bool? status;
   String? message;
   Data? data;
 
-  BookingCustomer({this.status, this.message, this.data});
+  BookingCustomer(
+      {this.notifikasiBerhasilDikirim, this.status, this.message, this.data});
 
   BookingCustomer.fromJson(Map<String, dynamic> json) {
+    notifikasiBerhasilDikirim = json['Notifikasi berhasil dikirim'] != null
+        ? new NotifikasiBerhasilDikirim.fromJson(
+        json['Notifikasi berhasil dikirim'])
+        : null;
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -13,6 +19,10 @@ class BookingCustomer {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.notifikasiBerhasilDikirim != null) {
+      data['Notifikasi berhasil dikirim'] =
+          this.notifikasiBerhasilDikirim!.toJson();
+    }
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.data != null) {
@@ -22,37 +32,90 @@ class BookingCustomer {
   }
 }
 
+class NotifikasiBerhasilDikirim {
+  String? messageId;
+
+  NotifikasiBerhasilDikirim({this.messageId});
+
+  NotifikasiBerhasilDikirim.fromJson(Map<String, dynamic> json) {
+    messageId = json['message_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['message_id'] = this.messageId;
+    return data;
+  }
+}
+
 class Data {
+  BookingData? bookingData;
+  List<KendaraanPic>? kendaraanPic;
+
+  Data({this.bookingData, this.kendaraanPic});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    bookingData = json['booking_data'] != null
+        ? new BookingData.fromJson(json['booking_data'])
+        : null;
+    if (json['kendaraan_pic'] != null) {
+      kendaraanPic = <KendaraanPic>[];
+      json['kendaraan_pic'].forEach((v) {
+        kendaraanPic!.add(new KendaraanPic.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.bookingData != null) {
+      data['booking_data'] = this.bookingData!.toJson();
+    }
+    if (this.kendaraanPic != null) {
+      data['kendaraan_pic'] =
+          this.kendaraanPic!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class BookingData {
   int? id;
   String? kodeBooking;
   int? idJenissvc;
-  int? idTipe;
-  int? idMerk;
+  Null? idTipe;
+  Null? idMerk;
   int? idCustomer;
   int? idKendaraan;
   int? idCabang;
   String? jamBooking;
   String? tglBooking;
   String? status;
-  String? odometer;
-  String? pic;
-  String? hpPic;
-  String? referensi;
-  String? referensiTeman;
+  Null? odometer;
+  Null? pic;
+  Null? hpPic;
+  Null? referensi;
+  Null? referensiTeman;
   String? keluhan;
-  String? perintahKerja;
-  String? createdBy;
+  Null? perintahKerja;
+  Null? createdBy;
   int? deleted;
   String? createdAt;
   String? updatedAt;
-  String? berita;
-  String? kode;
+  Null? berita;
+  Null? kode;
   String? typeOrder;
+  Null? location;
+  Null? locationName;
+  Null? datetimeApprove;
+  Null? jamApprove;
+  Null? jamOtw;
+  Null? jamTiba;
   JenisService? jenisService;
   Cabang? cabang;
   Kendaraan? kendaraan;
 
-  Data(
+  BookingData(
       {this.id,
         this.kodeBooking,
         this.idJenissvc,
@@ -78,11 +141,17 @@ class Data {
         this.berita,
         this.kode,
         this.typeOrder,
+        this.location,
+        this.locationName,
+        this.datetimeApprove,
+        this.jamApprove,
+        this.jamOtw,
+        this.jamTiba,
         this.jenisService,
         this.cabang,
         this.kendaraan});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  BookingData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     kodeBooking = json['kode_booking'];
     idJenissvc = json['id_jenissvc'];
@@ -108,6 +177,12 @@ class Data {
     berita = json['berita'];
     kode = json['kode'];
     typeOrder = json['type_order'];
+    location = json['location'];
+    locationName = json['location_name'];
+    datetimeApprove = json['datetime_approve'];
+    jamApprove = json['jam_approve'];
+    jamOtw = json['jam_otw'];
+    jamTiba = json['jam_tiba'];
     jenisService = json['jenis_service'] != null
         ? new JenisService.fromJson(json['jenis_service'])
         : null;
@@ -145,6 +220,12 @@ class Data {
     data['berita'] = this.berita;
     data['kode'] = this.kode;
     data['type_order'] = this.typeOrder;
+    data['location'] = this.location;
+    data['location_name'] = this.locationName;
+    data['datetime_approve'] = this.datetimeApprove;
+    data['jam_approve'] = this.jamApprove;
+    data['jam_otw'] = this.jamOtw;
+    data['jam_tiba'] = this.jamTiba;
     if (this.jenisService != null) {
       data['jenis_service'] = this.jenisService!.toJson();
     }
@@ -182,12 +263,12 @@ class Cabang {
   String? nama;
   String? alamat;
   String? telp;
-  String? fasilitas;
+  Null? fasilitas;
   String? jamOperasional;
   String? latitude;
   String? longitude;
   int? idCompany;
-  String? keterangan;
+  Null? keterangan;
   Company? company;
 
   Cabang(
@@ -262,13 +343,13 @@ class Kendaraan {
   String? warna;
   String? tahun;
   String? transmisi;
-  String? noRangka;
-  String? noMesin;
-  String? modelKaroseri;
-  String? drivingMode;
-  String? power;
+  Null? noRangka;
+  Null? noMesin;
+  Null? modelKaroseri;
+  Null? drivingMode;
+  Null? power;
   String? kategoriKendaraan;
-  String? jenisKontrak;
+  Null? jenisKontrak;
   int? idTipe;
   int? idMerk;
   List<Tipes>? tipes;
@@ -379,6 +460,47 @@ class Merks {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['nama_merk'] = this.namaMerk;
+    return data;
+  }
+}
+
+class KendaraanPic {
+  Null? id;
+  Null? idTipe;
+  Null? idMerk;
+  String? emailPic;
+  Null? namaMerk;
+  Null? namaTipe;
+  Null? noPolisi;
+
+  KendaraanPic(
+      {this.id,
+        this.idTipe,
+        this.idMerk,
+        this.emailPic,
+        this.namaMerk,
+        this.namaTipe,
+        this.noPolisi});
+
+  KendaraanPic.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    idTipe = json['id_tipe'];
+    idMerk = json['id_merk'];
+    emailPic = json['email_pic'];
+    namaMerk = json['nama_merk'];
+    namaTipe = json['nama_tipe'];
+    noPolisi = json['no_polisi'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['id_tipe'] = this.idTipe;
+    data['id_merk'] = this.idMerk;
+    data['email_pic'] = this.emailPic;
+    data['nama_merk'] = this.namaMerk;
+    data['nama_tipe'] = this.namaTipe;
+    data['no_polisi'] = this.noPolisi;
     return data;
   }
 }
