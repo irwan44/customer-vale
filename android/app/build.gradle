@@ -57,6 +57,7 @@ def getCurrentFlavor() {
     }
 }
 
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -139,8 +140,9 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.pusher:pusher-java-client:2.4.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    //for user of flutter local notification
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     implementation 'androidx.window:window:1.0.0'
     implementation 'androidx.window:window-java:1.0.0'
