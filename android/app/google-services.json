@@ -1,0 +1,133 @@
+{
+  "project_info": {
+    "project_number": "148296100294",
+    "firebase_url": "https://bengkelly-mobile-app-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "bengkelly-mobile-app",
+    "storage_bucket": "bengkelly-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148296100294:android:0816016bc4c1f034fa2ac7",
+        "android_client_info": {
+          "package_name": "com.vale.customer.co.id"
+        }
+      },
+      "client_info": {
+        "mobilesdk_app_id": "1:148296100294:android:0816016bc4c1f034fa2ac7",
+        "android_client_info": {
+          "package_name": "com.vale.customer.co.id.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148296100294-7hoqqgt09q8cfnjs3d0quv5v49k5vib5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkp-s9wI8d9ZsGTecwMCzjoIg0x7VA378"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148296100294-7hoqqgt09q8cfnjs3d0quv5v49k5vib5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148296100294:android:45f555a8a9158fc5fa2ac7",
+        "android_client_info": {
+          "package_name": "com.vale.customer.co.id"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148296100294-7hoqqgt09q8cfnjs3d0quv5v49k5vib5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkp-s9wI8d9ZsGTecwMCzjoIg0x7VA378"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148296100294-7hoqqgt09q8cfnjs3d0quv5v49k5vib5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148296100294:android:60f820b283e565c9fa2ac7",
+        "android_client_info": {
+          "package_name": "com.vale.customer.co.id"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148296100294-7hoqqgt09q8cfnjs3d0quv5v49k5vib5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkp-s9wI8d9ZsGTecwMCzjoIg0x7VA378"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148296100294-7hoqqgt09q8cfnjs3d0quv5v49k5vib5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148296100294:android:a0ef17b1d5529016fa2ac7",
+        "android_client_info": {
+          "package_name": "com.vale.customer.co.id"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148296100294-7hoqqgt09q8cfnjs3d0quv5v49k5vib5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkp-s9wI8d9ZsGTecwMCzjoIg0x7VA378"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148296100294-7hoqqgt09q8cfnjs3d0quv5v49k5vib5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
