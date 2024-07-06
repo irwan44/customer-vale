@@ -59,10 +59,11 @@ class API {
   static const _PostUbahPassword = '$_baseUrl/customer/ubah-password';
 
 
-  static Future<String?> login({required String email, required String password}) async {
+  static Future<String?> login({required String email, required String password, required String fcmtoken}) async {
     final data = {
       "email": email,
       "password": password,
+      "fcm_token": fcmtoken,
     };
 
     try {

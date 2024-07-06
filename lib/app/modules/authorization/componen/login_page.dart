@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../componen/color.dart';
 import '../../../componen/custom_widget.dart';
@@ -11,6 +12,7 @@ import '../../../routes/app_pages.dart';
 import '../controllers/authorization_controller.dart';
 import 'common.dart';
 import 'fade_animationtest.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -21,7 +23,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool obscureText = true;
   final controller = Get.find<AuthorizationController>();
-
+  final storage = GetStorage();
   void togglePasswordVisibility() {
     setState(() {
       obscureText = !obscureText;
@@ -157,13 +159,21 @@ class _LoginPageState extends State<LoginPage> {
                                   if (controller.EmailController.text.isNotEmpty &&
                                       controller.PasswordController.text.isNotEmpty) {
                                     try {
+                                      String? fcmToken = storage.read('fcm_token');
+                                      print("Sending API request with:");
+                                      print("Email: ${controller.EmailController.text}");
+                                      print("Password: ${controller.PasswordController.text}");
+                                      print("FCM Token: $fcmToken");
+
                                       String? token = await API.login(
                                         email: controller.EmailController.text,
                                         password: controller.PasswordController.text,
+                                        fcmtoken: fcmToken ?? '',
                                       );
 
                                       if (token != null) {
                                         Get.offAllNamed(Routes.HOME);
+                                        print("Login successful, received token: $token");
                                       } else {
                                         Get.snackbar('Error', 'Terjadi kesalahan saat login',
                                             backgroundColor: Colors.redAccent,

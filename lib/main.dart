@@ -75,16 +75,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String? _token;
-  late PusherChannelsFlutter pusher;
-  final String appId = "1827229";
-  final String key = "5c463cc9a2fdf08932b5";
-  final String secret = "521202e4d68dc816c054";
-  final String cluster = "ap1";
 
   @override
   void initState() {
     super.initState();
-    initPusher();
     _getToken();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
@@ -96,31 +90,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<void> initPusher() async {
-    pusher = PusherChannelsFlutter.getInstance();
-    try {
-      await pusher.init(
-        apiKey: key,
-        cluster: cluster,
-        onEvent: (event) {
-          print("Event received: $event");
-          showLocalNotification(event.eventName, event.data);
-        },
-        onConnectionStateChange: (currentState, previousState) {
-          print("Connection state changed from $previousState to $currentState");
-        },
-        onError: (message, code, exception) {
-          print("Connection error: $message");
-        },
-      );
-      await pusher.connect();
-      await pusher.subscribe(
-        channelName: 'my-channel',
-      );
-    } catch (e) {
-      print("Pusher connection error: $e");
-    }
-  }
 
   void _getToken() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -142,6 +111,10 @@ class _MyAppState extends State<MyApp> {
       });
       print("FCM Token: $_token");
 
+      // Simpan token ke GetStorage
+      final storage = GetStorage();
+      storage.write('fcm_token', _token);
+
       // Subscribe to topic
       messaging.subscribeToTopic('ValeBooking').then((_) {
         print('Subscribed to allUsers topic');
@@ -152,6 +125,7 @@ class _MyAppState extends State<MyApp> {
       print("User declined or has not accepted permission");
     }
   }
+
 
   void showLocalNotification(String title, String body) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -169,8 +143,8 @@ class _MyAppState extends State<MyApp> {
     NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       0,
-      'Notikasi Masuk',
-      'Status Kendaraan anada : Booking',
+      title,
+      body,
       platformChannelSpecifics,
       payload: 'item x',
     );
