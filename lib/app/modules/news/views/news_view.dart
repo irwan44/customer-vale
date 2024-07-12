@@ -40,11 +40,12 @@ class _NewsViewState extends State<NewsView> {
   Widget build(BuildContext context) {
     controller.checkForUpdate();
     return Scaffold(
-      extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
         forceMaterialTransparency: true,
         backgroundColor: Colors.white,
+        elevation: 0,
         automaticallyImplyLeading: false,
         title: Text('News', style: GoogleFonts.nunito(color: MyColors.appPrimaryColor, fontWeight: FontWeight.bold),),
         actions: [

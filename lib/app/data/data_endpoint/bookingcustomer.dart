@@ -83,34 +83,34 @@ class BookingData {
   int? id;
   String? kodeBooking;
   int? idJenissvc;
-  Null? idTipe;
-  Null? idMerk;
+  String? idTipe;
+  String? idMerk;
   int? idCustomer;
   int? idKendaraan;
   int? idCabang;
   String? jamBooking;
   String? tglBooking;
   String? status;
-  Null? odometer;
-  Null? pic;
-  Null? hpPic;
-  Null? referensi;
-  Null? referensiTeman;
+  String? odometer;
+  String? pic;
+  String? hpPic;
+  String? referensi;
+  String? referensiTeman;
   String? keluhan;
-  Null? perintahKerja;
-  Null? createdBy;
+  String? perintahKerja;
+  String? createdBy;
   int? deleted;
   String? createdAt;
   String? updatedAt;
-  Null? berita;
-  Null? kode;
+  String? berita;
+  String? kode;
   String? typeOrder;
-  Null? location;
-  Null? locationName;
-  Null? datetimeApprove;
-  Null? jamApprove;
-  Null? jamOtw;
-  Null? jamTiba;
+  String? location;
+  String? locationName;
+  String? datetimeApprove;
+  String? jamApprove;
+  String? jamOtw;
+  String? jamTiba;
   JenisService? jenisService;
   Cabang? cabang;
   Kendaraan? kendaraan;
@@ -263,12 +263,12 @@ class Cabang {
   String? nama;
   String? alamat;
   String? telp;
-  Null? fasilitas;
+  String? fasilitas;
   String? jamOperasional;
   String? latitude;
   String? longitude;
   int? idCompany;
-  Null? keterangan;
+  String? keterangan;
   Company? company;
 
   Cabang(
@@ -343,13 +343,13 @@ class Kendaraan {
   String? warna;
   String? tahun;
   String? transmisi;
-  Null? noRangka;
-  Null? noMesin;
-  Null? modelKaroseri;
-  Null? drivingMode;
-  Null? power;
+  String? noRangka;
+  String? noMesin;
+  String? modelKaroseri;
+  String? drivingMode;
+  String? power;
   String? kategoriKendaraan;
-  Null? jenisKontrak;
+  String? jenisKontrak;
   int? idTipe;
   int? idMerk;
   List<Tipes>? tipes;
@@ -465,13 +465,13 @@ class Merks {
 }
 
 class KendaraanPic {
-  Null? id;
-  Null? idTipe;
-  Null? idMerk;
+  int? id;
+  int? idTipe;
+  int? idMerk;
   String? emailPic;
-  Null? namaMerk;
-  Null? namaTipe;
-  Null? noPolisi;
+  String? namaMerk;
+  String? namaTipe;
+  String? noPolisi;
 
   KendaraanPic(
       {this.id,

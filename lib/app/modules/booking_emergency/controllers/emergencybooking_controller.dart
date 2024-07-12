@@ -12,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../data/data_endpoint/bookingcustomer.dart';
 import '../../../data/data_endpoint/customkendaraan.dart';
+import '../../../data/data_endpoint/kendaraandepartemen.dart';
 import '../../../data/data_endpoint/kendaraanpic.dart';
 import '../../../data/data_endpoint/lokasi.dart' as LokasiEndpoint;
 import '../../../data/data_endpoint/lokasi.dart';
@@ -22,20 +23,29 @@ import '../componen/berhasil_booking.dart';
 
 class EmergencyBookingViewController extends GetxController {
   var Keluhan = ''.obs;
-  var selectedTransmisi = Rx<DataKendaraan?>(null);
+
 
   var selectedService = Rx<JenisServices?>(null);
   var selectedLocation = Rx<String?>(null);
   var selectedLocationID = Rx<DataLokasi?>(null);
   var selectedDate = Rx<DateTime?>(null);
   var selectedTime = Rx<TimeOfDay?>(null);
-  var tipeList = <DataKendaraan>[].obs;
+
   var tipeListPIC = <Kendaraanpic>[].obs;
   var filteredListPIC = <Kendaraanpic>[].obs;
   var selectedTransmisiPIC = Rx<Kendaraanpic?>(null);
+
+  var tipeList = <DataKendaraan>[].obs;
+  var filteredList = <DataKendaraan>[].obs;
+  var selectedTransmisi = Rx<DataKendaraan?>(null);
+
+  var tipeListDepartemen = <KendaraanDepartemen>[].obs;
+  var filteredListDepartemen = <KendaraanDepartemen>[].obs;
+  var selectedTransmisiDepartemen = Rx<KendaraanDepartemen?>(null);
+
   var serviceList = <JenisServices>[].obs;
   var isLoading = true.obs;
-  var filteredList = <DataKendaraan>[].obs;
+
   var calendarFormat = CalendarFormat.month.obs;
   var focusedDay = DateTime.now().obs;
   var isDateSelected = false.obs;
@@ -57,6 +67,13 @@ class EmergencyBookingViewController extends GetxController {
   bool isFormValidpic() {
     return
       selectedTransmisiPIC.value != null &&
+          selectedLocation.value != null &&
+          _currentPosition != null &&
+          Keluhan.value.isNotEmpty;
+  }
+  bool isFormValidDepartemen() {
+    return
+      selectedTransmisiDepartemen.value != null &&
           selectedLocation.value != null &&
           _currentPosition != null &&
           Keluhan.value.isNotEmpty;
@@ -90,6 +107,11 @@ class EmergencyBookingViewController extends GetxController {
   }
   bool isFormValidEmergencypic() {
     return selectedTransmisiPIC.value != null &&
+        selectedLocation.value != null &&
+        Keluhan.value.isNotEmpty;
+  }
+  bool isFormValidEmergencyDepartemen() {
+    return selectedTransmisiDepartemen.value != null &&
         selectedLocation.value != null &&
         Keluhan.value.isNotEmpty;
   }
@@ -220,6 +242,13 @@ class EmergencyBookingViewController extends GetxController {
   }
 
   Future<void> EmergencyServiceVale() async {
+    if (isFormValidEmergencyDepartemen()) {
+      await _handleEmergencyService(
+        idKendaraan: selectedTransmisiDepartemen.value!.id.toString(),
+        isPIC: true,
+      );
+    }
+
     if (isFormValidEmergencypic()) {
       await _handleEmergencyService(
         idKendaraan: selectedTransmisiPIC.value!.id.toString(),
@@ -313,6 +342,21 @@ class EmergencyBookingViewController extends GetxController {
     try {
       var customerKendaraan = await API.PilihKendaraan();
       var KendaraanPIC = await API.PilihKendaraanPIC();
+      var KendaraanDepartemen = await API.PilihKendaraanDepartemen();
+      //Depertemen
+      if (KendaraanDepartemen != null) {
+        tipeListDepartemen.value = (KendaraanDepartemen.dataDepartemen?.kendaraan ?? []);
+        filteredListDepartemen.value = tipeListDepartemen.value;
+
+        if (tipeListDepartemen.isNotEmpty) {
+          selectedTransmisiDepartemen.value = tipeListDepartemen.first;
+        }
+      } else {
+        tipeListDepartemen.value = [];
+        filteredListDepartemen.value = [];
+        selectedTransmisiDepartemen.value = null;
+      }
+      //PIC
       if (KendaraanPIC != null) {
         tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
         filteredListPIC.value = tipeListPIC.value;
@@ -325,7 +369,7 @@ class EmergencyBookingViewController extends GetxController {
         filteredListPIC.value = [];
         selectedTransmisiPIC.value = null;
       }
-
+//Pelanggan
       if (customerKendaraan != null) {
         tipeList.value = customerKendaraan.datakendaraan ?? [];
         filteredList.value = tipeList.value;

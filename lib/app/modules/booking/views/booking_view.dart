@@ -39,13 +39,14 @@ class BookingViewState extends State<BookingView> {
                 height: 50, // <-- Your height
                 child: ElevatedButton(
                   onPressed: (controller.isFormValidpic() && !controller.isLoading.value) ||
-                      (controller.isFormValid() && !controller.isLoading.value)
+                      (controller.isFormValid() && !controller.isLoading.value) ||
+                      (controller.isFormValiddepartemen() && !controller.isLoading.value)
                       ? () {
                     Get.toNamed(Routes.DETAILBOOKING);
                   }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: (controller.isFormValidpic() || controller.isFormValid())
+                    backgroundColor: (controller.isFormValidpic() || controller.isFormValid() || controller.isFormValiddepartemen())
                         ? MyColors.appPrimaryColor
                         : Colors.grey,
                     shape: RoundedRectangleBorder(
@@ -139,13 +140,20 @@ class BookingViewState extends State<BookingView> {
                                   backgroundColor: Colors.white,
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return FractionallySizedBox(
-                                      heightFactor: 1,
-                                      child: Column(
+                                    return  Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
-                                          SizedBox(height: 50,),
+                                          const SizedBox(height: 45,),
+                                          Container(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: InkWell(
+                                                  onTap: () {
+                                              Get.back();
+                                                  },
+                                                child:  Icon(Icons.close_rounded),
+                                            )
+                                          ),
                                           Container(
                                             height: 60,
                                             padding: EdgeInsets.all(16.0),
@@ -162,7 +170,6 @@ class BookingViewState extends State<BookingView> {
                                             child: ListKendaraanWidget(),
                                           ),
                                         ],
-                                      ),
                                     );
                                   },
                                 );
@@ -181,19 +188,26 @@ class BookingViewState extends State<BookingView> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
+                                        controller.selectedTransmisiPIC.value == null &&
+                                            controller.selectedTransmisi.value == null &&
+                                            controller.selectedTransmisiDepartemen.value == null
                                             ? 'Pilih Kendaraan'
-                                            : (controller.selectedTransmisiPIC.value != null)
+                                            : controller.selectedTransmisiPIC.value != null
                                             ? '${controller.selectedTransmisiPIC.value!.namaMerk} - ${controller.selectedTransmisiPIC.value!.namaTipe ?? ''} - ${controller.selectedTransmisiPIC.value!.noPolisi ?? ''}'
-                                            : '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}',
+                                            : controller.selectedTransmisi.value != null
+                                            ? '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}'
+                                            : '${controller.selectedTransmisiDepartemen.value!.namaMerk} - ${controller.selectedTransmisiDepartemen.value!.namaTipe ?? ''} - ${controller.selectedTransmisiDepartemen.value!.noPolisi ?? ''}',
                                         style: GoogleFonts.nunito(
-                                          color: (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
+                                          color: controller.selectedTransmisiPIC.value == null &&
+                                              controller.selectedTransmisi.value == null &&
+                                              controller.selectedTransmisiDepartemen.value == null
                                               ? Colors.grey
                                               : Colors.black,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
                                     ),
                                   ],
                                 ),
@@ -270,9 +284,6 @@ class BookingViewState extends State<BookingView> {
                                   builder: (BuildContext context) {
                                     return DraggableScrollableSheet(
                                       expand: false,
-                                      initialChildSize: 0.65,
-                                      maxChildSize: 0.65,
-                                      minChildSize: 0.65,
                                       builder: (BuildContext context, ScrollController scrollController) {
                                         return SingleChildScrollView(
                                           controller: scrollController,
@@ -441,7 +452,7 @@ class BookingViewState extends State<BookingView> {
                   padding: EdgeInsets.all(16.0),
                   child: Text(
                     'Pilih Jenis Service',
-                    style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.bold, color: MyColors.appPrimaryColor),
                   ),
                 ),
                 Expanded(

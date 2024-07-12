@@ -12,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../data/data_endpoint/bookingcustomer.dart';
 import '../../../data/data_endpoint/customkendaraan.dart';
+import '../../../data/data_endpoint/kendaraandepartemen.dart';
 import '../../../data/data_endpoint/kendaraanpic.dart';
 import '../../../data/data_endpoint/kendaraanpic.dart';
 import '../../../data/data_endpoint/lokasi.dart' as LokasiEndpoint;
@@ -35,6 +36,10 @@ class BookingController extends GetxController {
   var tipeListPIC = <Kendaraanpic>[].obs;
   var filteredListPIC = <Kendaraanpic>[].obs;
   var selectedTransmisiPIC = Rx<Kendaraanpic?>(null);
+
+  var tipeListDepartemen = <KendaraanDepartemen>[].obs;
+  var filteredListDepartemen = <KendaraanDepartemen>[].obs;
+  var selectedTransmisiDepartemen = Rx<KendaraanDepartemen?>(null);
   var calendarFormat = CalendarFormat.month.obs;
   var focusedDay = DateTime.now().obs;
   var isDateSelected = false.obs;
@@ -42,6 +47,7 @@ class BookingController extends GetxController {
     await fetchTipeList();
     await fetchTipeListPIC();
     await fetchServiceList();
+    await fetchTipeListDepartemen();
   }
 
   late GoogleMapController mapController;
@@ -67,7 +73,14 @@ class BookingController extends GetxController {
         selectedTime.value != null &&
         Keluhan.value.isNotEmpty;
   }
-
+  bool isFormValiddepartemen() {
+    return selectedTransmisiDepartemen.value != null &&
+        selectedService.value != null &&
+        selectedLocation.value != null &&
+        selectedDate.value != null &&
+        selectedTime.value != null &&
+        Keluhan.value.isNotEmpty;
+  }
   bool isFormValidEmergency() {
     return selectedTransmisi.value != null &&
         selectedLocation.value != null &&
@@ -132,22 +145,39 @@ class BookingController extends GetxController {
     if (isFormValidpic()) {
       await _handleBooking(
         idKendaraan: selectedTransmisiPIC.value!.id.toString(),
-        isPIC: true,
+        apiMethod: API.BookingIDPIC,
       );
-    }
-
-    if (isFormValid()) {
+    } else if (isFormValiddepartemen()) {
+      await _handleBooking(
+        idKendaraan: selectedTransmisiDepartemen.value!.id.toString(),
+        apiMethod: API.BookingIDDepartemen,
+      );
+    } else if (isFormValid()) {
       await _handleBooking(
         idKendaraan: selectedTransmisi.value!.id.toString(),
-        isPIC: false,
+        apiMethod: API.BookingID,
       );
     }
   }
 
-  Future<void> _handleBooking({String? idKendaraan, required bool isPIC}) async {
+  Future<void> _handleBooking({
+    required String idKendaraan,
+    required Future<dynamic> Function({
+    required String idcabang,
+    required String idjenissvc,
+    required String keluhan,
+    required String tglbooking,
+    required String jambooking,
+    required String idkendaraan,
+    }) apiMethod,
+  }) async {
     if (Keluhan.value == null || idKendaraan == null) {
-      Get.snackbar('Gagal Booking', 'Informasi tidak lengkap',
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Gagal Booking',
+        'Informasi tidak lengkap',
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
       return;
     }
 
@@ -157,10 +187,15 @@ class BookingController extends GetxController {
       final idcabang = selectedLocationID.value?.geometry?.location?.id?.toString();
 
       if (idcabang == null) {
-        Get.snackbar('Gagal Booking', 'ID lokasi tidak tersedia',
-            backgroundColor: Colors.redAccent, colorText: Colors.white);
+        Get.snackbar(
+          'Gagal Booking',
+          'ID lokasi tidak tersedia',
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+        );
         return;
       }
+
       final DateTime selectedDateTime = DateTime(
         selectedDate.value!.year,
         selectedDate.value!.month,
@@ -168,32 +203,23 @@ class BookingController extends GetxController {
         selectedTime.value!.hour,
         selectedTime.value!.minute,
       );
-      // Print data to be sent to API
+
       print('Data to be sent to API:');
       print('ID Cabang: $idcabang');
       print('Keluhan: ${Keluhan.value}');
-      print('Jenis Servis : ${selectedService.value!.id.toString()}');
+      print('Jenis Servis : ${selectedService.value?.id.toString()}');
       print('ID Kendaraan: $idKendaraan');
       print('Tanggal: ${DateFormat('dd/MM/yyyy').format(selectedDateTime)}');
       print('Jam: ${DateFormat('HH:mm').format(selectedDateTime)}');
 
-      final response = await (isPIC
-          ? API.BookingIDPIC(
+      final response = await apiMethod(
         idcabang: idcabang,
         idjenissvc: selectedService.value!.id.toString(),
         keluhan: Keluhan.value,
         tglbooking: DateFormat('dd/MM/yyyy').format(selectedDateTime).toString(),
         jambooking: DateFormat('HH:mm').format(selectedDateTime).toString(),
         idkendaraan: idKendaraan,
-      )
-          : API.BookingID(
-        idcabang: idcabang,
-        idjenissvc: selectedService.value!.id.toString(),
-        keluhan: Keluhan.value,
-        tglbooking: DateFormat('dd/MM/yyyy').format(selectedDateTime).toString(),
-        jambooking: DateFormat('HH:mm').format(selectedDateTime).toString(),
-        idkendaraan: idKendaraan,
-      ));
+      );
 
       print('API Response: $response');
 
@@ -206,19 +232,29 @@ class BookingController extends GetxController {
         );
         Get.offAllNamed(Routes.HOME);
       } else {
-        Get.snackbar('Error', 'Terjadi kesalahan saat Booking',
-            backgroundColor: Colors.redAccent, colorText: Colors.white);
+        Get.snackbar(
+          'Error',
+          'Terjadi kesalahan saat Booking',
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+        );
       }
     } on DioError catch (e) {
       _handleDioError(e);
     } catch (e) {
       print('Error during booking: $e');
-      Get.snackbar('Gagal Booking', 'Terjadi kesalahan saat Booking',
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Gagal Booking',
+        'Kendaraan anda sudah booking sebelumnya',
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
   }
+
+
 
   void _handleDioError(DioError e) {
     if (e.response != null) {
@@ -256,15 +292,37 @@ class BookingController extends GetxController {
 
     isLoading.value = false;
   }
+  Future<void> fetchTipeListDepartemen() async {
+    isLoading.value = true;
+    var KendaraanDepartemen = await API.PilihKendaraanDepartemen();
+    if (KendaraanDepartemen != null) {
+      tipeListDepartemen.value = (KendaraanDepartemen.dataDepartemen?.kendaraan ?? []);
+      filteredListDepartemen.value = tipeListDepartemen.value;
+
+      if (tipeListDepartemen.isNotEmpty) {
+        selectedTransmisiDepartemen.value = tipeListDepartemen.first;
+      }
+    }
+
+    isLoading.value = false;
+  }
+
   Future<void> fetchTipeList() async {
     isLoading.value = true;
+    var KendaraanDepartemen = await API.PilihKendaraanDepartemen();
     var customerKendaraan = await API.PilihKendaraan();
     var KendaraanPIC = await API.PilihKendaraanPIC();
-    if (KendaraanPIC != null) {
+    if (KendaraanDepartemen != null) {
+      tipeListDepartemen.value = (KendaraanDepartemen.dataDepartemen?.kendaraan ?? []);
+      filteredListDepartemen.value = tipeListDepartemen.value; // Assign the observable value
+      if (tipeListDepartemen.isNotEmpty) {
+        selectedTransmisiDepartemen.value = tipeListDepartemen.first;
+      }
+    }
 
+    if (KendaraanPIC != null) {
       tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
       filteredListPIC.value = tipeListPIC.value; // Assign the observable value
-
       if (tipeListPIC.isNotEmpty) {
         selectedTransmisiPIC.value = tipeListPIC.first;
       }

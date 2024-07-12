@@ -1,5 +1,5 @@
 name: customer_bengkelly
-version: 1.3.6+1
+version: 1.4.2+1
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -115,6 +115,7 @@ flutter:
     - assets/raja_sate/
     - assets/rosin_resto/
     - assets/simpang_raya/
+    - assets/images/profile.png
     - assets/warung_makan_selonjoran/
 #    - assets/sounds/sounds.mp3
 

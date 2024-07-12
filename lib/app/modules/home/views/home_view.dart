@@ -54,6 +54,7 @@ class _HomeViewState extends State<HomeView> {
       bottomNavigationBar: BottomAppBar(
         height: 100,
         color: MyColors.appPrimaryColor,
+        elevation: 0,
         shape: CircularNotchedRectangle(),
         notchMargin: 2.0,
         child: Row(
@@ -61,18 +62,18 @@ class _HomeViewState extends State<HomeView> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _buildIconButton('assets/icons/octicon_home-16.svg', 'Home', 0),
-            SizedBox(width: 10), // S
-            _buildIconButton('assets/icons/mingcute_news-line.svg', 'News', 1),
-            SizedBox(width: 90), // Space for FAB
+            SizedBox(width: 10),
+                _buildIconButton('assets/icons/mingcute_news-line.svg', 'News', 1),
+            SizedBox(width: 90),
             _buildIconButton('assets/icons/icon-park-outline_history-query.svg', 'History', 2),
-            SizedBox(width: 10), // S
+            SizedBox(width: 10),
             _buildIconButton('assets/icons/gridicons_user.svg', 'Profile', 3),
           ],
         ),
       ),
       floatingActionButton: SizedBox(
-        width: 90, // Lebar FloatingActionButton
-        height: 90, // Tinggi FloatingActionButton
+        width: 90,
+        height: 90,
         child:
         FloatingActionButton(
           onPressed: () {
@@ -100,13 +101,13 @@ class _HomeViewState extends State<HomeView> {
         children: [
           IconButton(
             icon: isSelected ? AnimatedContainer(
-              duration: Duration(milliseconds: 300), // Durasi animasi
+              duration: Duration(milliseconds: 300),
               curve: Curves.bounceIn,
               padding: EdgeInsets.all(10),
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: MyColors.select,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: SvgPicture.asset(

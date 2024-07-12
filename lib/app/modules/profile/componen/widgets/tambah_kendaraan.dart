@@ -260,7 +260,7 @@ class TambahKendaraan extends StatelessWidget {
                             child:
                             TextFormField(
                               textCapitalization: TextCapitalization.characters,
-                              controller: controller.tahunController,
+                              controller: controller.nomorlambungController,
                               keyboardType: TextInputType.text,
                               obscureText:false,
                               decoration: InputDecoration(
@@ -274,10 +274,6 @@ class TambahKendaraan extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-
                         FadeInAnimation(
                             delay: 1.5,
                             child:  Text('Tahun')

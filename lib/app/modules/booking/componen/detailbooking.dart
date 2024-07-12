@@ -151,6 +151,33 @@ class DetailBookingViewState extends State<DetailBookingView> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
+                                          if (controller.selectedTransmisiDepartemen.value != null)
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${controller.selectedTransmisiDepartemen.value!.namaMerk} - ${controller.selectedTransmisiDepartemen.value!.namaTipe}',
+                                                  style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text('Nomor Polisi :'),
+                                                    SizedBox(width: 10,),
+                                                    Text('${controller.selectedTransmisiDepartemen.value!.noPolisi}'),
+                                                  ],
+                                                ),
+
+                                                Row(
+                                                  children: [
+                                                    Text('${controller.selectedTransmisiDepartemen.value!.warna}'),
+                                                    Text(' - '),
+                                                    Text('Tahun ${controller.selectedTransmisiDepartemen.value!.tahun}'),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          // Kondisi untuk non-PIC
                                           if (controller.selectedTransmisiPIC.value != null)
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,

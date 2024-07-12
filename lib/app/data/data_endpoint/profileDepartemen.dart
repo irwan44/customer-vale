@@ -1,40 +1,41 @@
-class ProfilePIC {
+class ProfileDepartemen {
   bool? status;
   String? message;
-  DataPIC? dataPIC;
+  DataDepartemen? dataDepartemen;
 
-  ProfilePIC({this.status, this.message, this.dataPIC});
+  ProfileDepartemen({this.status, this.message, this.dataDepartemen});
 
-  ProfilePIC.fromJson(Map<String, dynamic> json) {
+  ProfileDepartemen.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    dataPIC =
-    json['DataPIC'] != null ? new DataPIC.fromJson(json['DataPIC']) : null;
+    dataDepartemen = json['DataDepartemen'] != null
+        ? new DataDepartemen.fromJson(json['DataDepartemen'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
-    if (this.dataPIC != null) {
-      data['DataPIC'] = this.dataPIC!.toJson();
+    if (this.dataDepartemen != null) {
+      data['DataDepartemen'] = this.dataDepartemen!.toJson();
     }
     return data;
   }
 }
 
-class DataPIC {
+class DataDepartemen {
   int? id;
   String? nama;
   String? email;
-  Null? alamat;
+  String? alamat;
   String? mandor;
-  Null? noTelepon;
+  String? noTelepon;
   String? createdAt;
   String? updatedAt;
   List<Kendaraan>? kendaraan;
 
-  DataPIC(
+  DataDepartemen(
       {this.id,
         this.nama,
         this.email,
@@ -45,7 +46,7 @@ class DataPIC {
         this.updatedAt,
         this.kendaraan});
 
-  DataPIC.fromJson(Map<String, dynamic> json) {
+  DataDepartemen.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nama = json['nama'];
     email = json['email'];
@@ -85,7 +86,6 @@ class Kendaraan {
   String? tahun;
   String? noPolisi;
   String? vinNumber;
-  String? emailPic;
   String? namaMerk;
   String? namaTipe;
 
@@ -95,7 +95,6 @@ class Kendaraan {
         this.tahun,
         this.noPolisi,
         this.vinNumber,
-        this.emailPic,
         this.namaMerk,
         this.namaTipe});
 
@@ -105,7 +104,6 @@ class Kendaraan {
     tahun = json['tahun'];
     noPolisi = json['no_polisi'];
     vinNumber = json['vin_number'];
-    emailPic = json['email_pic'];
     namaMerk = json['nama_merk'];
     namaTipe = json['nama_tipe'];
   }
@@ -117,7 +115,6 @@ class Kendaraan {
     data['tahun'] = this.tahun;
     data['no_polisi'] = this.noPolisi;
     data['vin_number'] = this.vinNumber;
-    data['email_pic'] = this.emailPic;
     data['nama_merk'] = this.namaMerk;
     data['nama_tipe'] = this.namaTipe;
     return data;

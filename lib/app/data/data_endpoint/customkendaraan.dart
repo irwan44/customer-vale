@@ -44,15 +44,18 @@ class DataKendaraan {
   String? power;
   String? kategoriKendaraan;
   String? jenisKontrak;
+  String? jenisUnit;
   int? deleted;
   String? createdBy;
   String? createdAt;
   String? updatedAt;
-  String? picIdPelanggan;
-  String? vinnumber;
+  int? idPicPerusahaan;
+  int? picIdPelanggan;
   int? idCustomer;
-  MerksKendaraan? merks;
-  List<TipeKendaraanCustommer>? tipes;
+  String? vinnumber;
+  String? expiredStnk;
+  Merks? merks;
+  List<Tipes>? tipes;
 
   DataKendaraan(
       {this.id,
@@ -71,13 +74,16 @@ class DataKendaraan {
         this.power,
         this.kategoriKendaraan,
         this.jenisKontrak,
+        this.jenisUnit,
         this.deleted,
         this.createdBy,
         this.createdAt,
         this.updatedAt,
+        this.idPicPerusahaan,
         this.picIdPelanggan,
         this.idCustomer,
         this.vinnumber,
+        this.expiredStnk,
         this.merks,
         this.tipes});
 
@@ -98,18 +104,21 @@ class DataKendaraan {
     power = json['power'];
     kategoriKendaraan = json['kategori_kendaraan'];
     jenisKontrak = json['jenis_kontrak'];
+    jenisUnit = json['jenis_unit'];
     deleted = json['deleted'];
-    vinnumber = json['vin_number'];
     createdBy = json['created_by'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    idPicPerusahaan = json['id_pic_perusahaan'];
     picIdPelanggan = json['pic_id_pelanggan'];
     idCustomer = json['id_customer'];
-    merks = json['merks'] != null ? new MerksKendaraan.fromJson(json['merks']) : null;
+    vinnumber = json['vin_number'];
+    expiredStnk = json['expired_stnk'];
+    merks = json['merks'] != null ? new Merks.fromJson(json['merks']) : null;
     if (json['tipes'] != null) {
-      tipes = <TipeKendaraanCustommer>[];
+      tipes = <Tipes>[];
       json['tipes'].forEach((v) {
-        tipes!.add(new TipeKendaraanCustommer.fromJson(v));
+        tipes!.add(new Tipes.fromJson(v));
       });
     }
   }
@@ -132,13 +141,16 @@ class DataKendaraan {
     data['power'] = this.power;
     data['kategori_kendaraan'] = this.kategoriKendaraan;
     data['jenis_kontrak'] = this.jenisKontrak;
+    data['jenis_unit'] = this.jenisUnit;
     data['deleted'] = this.deleted;
-    data['vin_number'] = this.vinnumber;
     data['created_by'] = this.createdBy;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['id_pic_perusahaan'] = this.idPicPerusahaan;
     data['pic_id_pelanggan'] = this.picIdPelanggan;
     data['id_customer'] = this.idCustomer;
+    data['vin_number'] = this.vinnumber;
+    data['expired_stnk'] = this.expiredStnk;
     if (this.merks != null) {
       data['merks'] = this.merks!.toJson();
     }
@@ -149,13 +161,13 @@ class DataKendaraan {
   }
 }
 
-class MerksKendaraan {
+class Merks {
   int? id;
   String? namaMerk;
 
-  MerksKendaraan({this.id, this.namaMerk});
+  Merks({this.id, this.namaMerk});
 
-  MerksKendaraan.fromJson(Map<String, dynamic> json) {
+  Merks.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     namaMerk = json['nama_merk'];
   }
@@ -168,13 +180,13 @@ class MerksKendaraan {
   }
 }
 
-class TipeKendaraanCustommer {
+class Tipes {
   int? id;
   String? namaTipe;
 
-  TipeKendaraanCustommer({this.id, this.namaTipe});
+  Tipes({this.id, this.namaTipe});
 
-  TipeKendaraanCustommer.fromJson(Map<String, dynamic> json) {
+  Tipes.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     namaTipe = json['nama_tipe'];
   }
