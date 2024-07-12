@@ -34,6 +34,7 @@ class ProfileController extends GetxController {
   final nopolController = TextEditingController();
   final hpController = TextEditingController();
   final warnaController = TextEditingController();
+  final nomorlambungController = TextEditingController();
   final tahunController = TextEditingController();
 
   final _packageName = ''.obs;
@@ -95,6 +96,7 @@ class ProfileController extends GetxController {
         selectedMerek.value.isNotEmpty &&
         selectedKategory.value.isNotEmpty &&
         selectedTransmisi.value.isNotEmpty &&
+        nomorlambungController.text.isNotEmpty &&
         tahunController.text.isNotEmpty) {
       print('nopolisi: ${nopolController.text}');
       print('idmerk: ${selectedMerekId.value}');
@@ -110,6 +112,7 @@ class ProfileController extends GetxController {
           idtipe: selectedTipeID.value.toString(),
           warna: warnaController.text,
           tahun: tahunController.text,
+          nomorlambung: nomorlambungController.text,
           categoryname: selectedKategory.value,
           transmission: selectedTransmisi.value,
         );

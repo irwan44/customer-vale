@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../../../componen/color.dart';
 import '../../../componen/shimmerbooking.dart';
 import '../../../data/data_endpoint/history.dart';
 import '../../../data/endpoint.dart';
@@ -31,7 +33,7 @@ class _NotofikasiState extends State<Notofikasi> {
       appBar: AppBar(
         forceMaterialTransparency: true,
         backgroundColor: Colors.white,
-        title: Text('Notifikasi'),
+        title: Text('Notifikasi', style: GoogleFonts.nunito(color: MyColors.appPrimaryColor, fontWeight: FontWeight.bold),),
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
@@ -114,8 +116,10 @@ class _NotofikasiState extends State<Notofikasi> {
                           Get.toNamed(Routes.DETAILHISTORY,
                             arguments: {
                               'alamat': e.alamat ?? '',
+                              'id': e.id.toString(),
                               'nama_cabang': e.namaCabang ?? '',
                               'nama_jenissvc': e.namaJenissvc ?? '',
+                              'no_polisi': e.noPolisi ?? '',
                               'nama_status': e.namaStatus ?? '',
                               'jasa': e.jasa?.map((item) => item.toJson()).toList() ?? [],
                               'part': e.part?.map((item) => item.toJson()).toList() ?? [],

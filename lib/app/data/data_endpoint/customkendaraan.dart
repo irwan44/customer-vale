@@ -49,6 +49,7 @@ class DataKendaraan {
   String? createdAt;
   String? updatedAt;
   String? picIdPelanggan;
+  String? vinnumber;
   int? idCustomer;
   MerksKendaraan? merks;
   List<TipeKendaraanCustommer>? tipes;
@@ -76,6 +77,7 @@ class DataKendaraan {
         this.updatedAt,
         this.picIdPelanggan,
         this.idCustomer,
+        this.vinnumber,
         this.merks,
         this.tipes});
 
@@ -97,6 +99,7 @@ class DataKendaraan {
     kategoriKendaraan = json['kategori_kendaraan'];
     jenisKontrak = json['jenis_kontrak'];
     deleted = json['deleted'];
+    vinnumber = json['vin_number'];
     createdBy = json['created_by'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -130,6 +133,7 @@ class DataKendaraan {
     data['kategori_kendaraan'] = this.kategoriKendaraan;
     data['jenis_kontrak'] = this.jenisKontrak;
     data['deleted'] = this.deleted;
+    data['vin_number'] = this.vinnumber;
     data['created_by'] = this.createdBy;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;

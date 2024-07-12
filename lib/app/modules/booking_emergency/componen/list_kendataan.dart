@@ -56,22 +56,12 @@ class ListKendaraanWidget extends StatelessWidget {
                             bool isSelected =
                                 item == controller.selectedTransmisiPIC.value;
                             return ListTile(
-                              title: Row(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    item.namaMerk ?? '',
-                                    style: GoogleFonts.nunito(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    ' - ',
-                                    style: GoogleFonts.nunito(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    item.namaTipe ?? '',
+                                    '${item.namaMerk ?? ''} - ${item.namaTipe ?? ''}',
                                     style: GoogleFonts.nunito(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -140,30 +130,22 @@ class ListKendaraanWidget extends StatelessWidget {
                             bool isSelected =
                                 item == controller.selectedTransmisi.value;
                             return ListTile(
-                              title: Row(
+                              title: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '${item.merks?.namaMerk}',
-                                    style: GoogleFonts.nunito(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    ' - ',
-                                    style: GoogleFonts.nunito(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
                                   ...(item.tipes ?? []).map((tipe) => Text(
-                                    '${tipe.namaTipe}',
+                                    '${item.merks?.namaMerk} - ${tipe.namaTipe}',
+                                    maxLines: 2,
                                     style: GoogleFonts.nunito(
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  )),
+                                  ),
+                                  ),
                                 ],
                               ),
                               subtitle: Text(
-                                'No Polisi: ${item.noPolisi}\nWarna: ${item.warna} - Tahun: ${item.tahun}',
+                                'No Polisi: ${item.noPolisi}\nWarna: ${item.warna} - Tahun: ${item.tahun}\nNomor Lambung: ${item.vinnumber??'Tidak ada nomor Lambung'}',
                               ),
                               trailing: isSelected
                                   ? Icon(Icons.check, color: Colors.green)

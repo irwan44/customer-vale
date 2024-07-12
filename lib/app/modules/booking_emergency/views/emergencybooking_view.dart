@@ -246,22 +246,23 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
                                   fillColor: Colors.transparent,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
-                                          ? 'Pilih Kendaraan'
-                                          : (controller.selectedTransmisiPIC.value != null)
-                                          ? '${controller.selectedTransmisiPIC.value!.namaMerk} - ${controller.selectedTransmisiPIC.value!.namaTipe ?? ''}'
-                                          : '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}',
-                                      style: GoogleFonts.nunito(
-                                        color: (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
-                                            ? Colors.grey
-                                            : Colors.black,
-                                        fontWeight: FontWeight.bold,
+                                    Expanded(
+                                      child: Text(
+                                        (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
+                                            ? 'Pilih Kendaraan'
+                                            : (controller.selectedTransmisiPIC.value != null)
+                                            ? '${controller.selectedTransmisiPIC.value!.namaMerk} - ${controller.selectedTransmisiPIC.value!.namaTipe ?? ''} - ${controller.selectedTransmisiPIC.value!.noPolisi ?? ''}'
+                                            : '${controller.selectedTransmisi.value!.merks?.namaMerk} - ${controller.selectedTransmisi.value!.tipes?.map((e) => e.namaTipe).join(", ")}',
+                                        style: GoogleFonts.nunito(
+                                          color: (controller.selectedTransmisiPIC.value == null && controller.selectedTransmisi.value == null)
+                                              ? Colors.grey
+                                              : Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                    const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
                                   ],
                                 ),
                               )),

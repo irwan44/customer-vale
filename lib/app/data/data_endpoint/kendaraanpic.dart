@@ -84,7 +84,7 @@ class Kendaraanpic {
   String? warna;
   String? tahun;
   String? noPolisi;
-  Null? vinNumber;
+  String? vinNumber;
   String? emailPic;
   String? namaMerk;
   String? namaTipe;

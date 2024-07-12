@@ -248,6 +248,38 @@ class TambahKendaraan extends StatelessWidget {
 
                         FadeInAnimation(
                             delay: 1.5,
+                            child:  Text('Nomor Lambung')
+                        ),
+                        FadeInAnimation(
+                          delay: 1.8,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: MyColors.bgformborder),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child:
+                            TextFormField(
+                              textCapitalization: TextCapitalization.characters,
+                              controller: controller.tahunController,
+                              keyboardType: TextInputType.text,
+                              obscureText:false,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(18),
+                                  border: InputBorder.none,
+                                  hintStyle: GoogleFonts.nunito(color: Colors.grey),
+                                  hintText: 'Isi Nomor Lambung'),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        FadeInAnimation(
+                            delay: 1.5,
                             child:  Text('Tahun')
                         ),
                         FadeInAnimation(

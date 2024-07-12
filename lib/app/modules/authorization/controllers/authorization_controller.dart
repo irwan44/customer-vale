@@ -27,6 +27,7 @@ class AuthorizationController extends GetxController {
   final hpController = TextEditingController();
   final warnaController = TextEditingController();
   final tahunController = TextEditingController();
+  final vinnumberController = TextEditingController();
 
   var isSignupFormValid = false.obs;
   var isRegisterFormValid = false.obs;
@@ -51,6 +52,7 @@ class AuthorizationController extends GetxController {
     hpController.addListener(_validateRegisterForm);
     warnaController.addListener(_validateRegisterForm);
     tahunController.addListener(_validateRegisterForm);
+    vinnumberController.addListener(_validateRegisterForm);
     selectedMerek.listen((_) => _validateRegisterForm());
     selectedTipe.listen((_) => _validateRegisterForm());
     selectedTransmisi.listen((_) => _validateRegisterForm());
@@ -72,6 +74,7 @@ class AuthorizationController extends GetxController {
         hpController.text.isNotEmpty &&
         warnaController.text.isNotEmpty &&
         tahunController.text.isNotEmpty &&
+        vinnumberController.text.isNotEmpty &&
         selectedMerek.isNotEmpty &&
         selectedTipe.isNotEmpty &&
         selectedTransmisi.isNotEmpty &&
@@ -86,6 +89,7 @@ class AuthorizationController extends GetxController {
     confirmPasswordController.dispose();
     nopolController.dispose();
     hpController.dispose();
+    vinnumberController.dispose();
     warnaController.dispose();
     tahunController.dispose();
     super.onClose();
@@ -107,6 +111,7 @@ class AuthorizationController extends GetxController {
           kategorikendaraan: selectedKategory.value,
           tahun: tahunController.text,
           warna: warnaController.text,
+          vinnumber: vinnumberController.text,
           transmisi: selectedTransmisi.value,
         );
 

@@ -2,6 +2,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:customer_bengkelly/app/componen/color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../componen/custom_widget.dart';
 import '../../../data/data_endpoint/kategorikendaraan.dart';
 import '../../../data/data_endpoint/merekkendaraan.dart';
@@ -53,10 +54,22 @@ class RegisterPage extends StatelessWidget {
                       children: [
                         FadeInAnimation(
                           delay: 1.5,
-                          child: CustomTextFormField(
-                            hinttext: 'Nomor Polisi',
-                            obsecuretext: false,
-                            controller: controller.nopolController,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: MyColors.bgformborder),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child:
+                            TextFormField(
+                              textCapitalization: TextCapitalization.characters,
+                              controller: controller.nopolController,
+                              obscureText:false,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(18),
+                                  border: InputBorder.none,
+                                  hintStyle: GoogleFonts.nunito(color: Colors.grey),
+                                  hintText: 'Nomor Polisi'),
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -64,10 +77,23 @@ class RegisterPage extends StatelessWidget {
                         ),
                         FadeInAnimation(
                           delay: 1.8,
-                          child: CustomTextFormField(
-                            hinttext: 'Nomor Handphone',
-                            obsecuretext: false,
-                            controller: controller.hpController,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: MyColors.bgformborder),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child:
+                            TextFormField(
+                              textCapitalization: TextCapitalization.characters,
+                              controller: controller.hpController,
+                              obscureText: false,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(18),
+                                  border: InputBorder.none,
+                                  hintStyle: GoogleFonts.nunito(color: Colors.grey),
+                                  hintText: 'Nomor Handphone'),
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -221,10 +247,21 @@ class RegisterPage extends StatelessWidget {
                         ),
                         FadeInAnimation(
                           delay: 1.8,
-                          child: CustomTextFormField(
-                            hinttext: 'Tahun',
-                            obsecuretext: false,
-                            controller: controller.tahunController,
+                          child:  Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: MyColors.bgformborder),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child:
+                            TextFormField(
+                              controller: controller.vinnumberController,
+                              obscureText:false,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(18),
+                                  border: InputBorder.none,
+                                  hintStyle: GoogleFonts.nunito(color: Colors.grey),
+                                  hintText: 'Vin Number'),
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -232,10 +269,46 @@ class RegisterPage extends StatelessWidget {
                         ),
                         FadeInAnimation(
                           delay: 1.8,
-                          child: CustomTextFormField(
-                            hinttext: 'warna',
-                            obsecuretext: false,
-                            controller: controller.warnaController,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: MyColors.bgformborder),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child:
+                            TextFormField(
+                              textCapitalization: TextCapitalization.characters,
+                              controller: controller.tahunController,
+                              keyboardType: TextInputType.number,
+                              obscureText:false,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(18),
+                                  border: InputBorder.none,
+                                  hintStyle: GoogleFonts.nunito(color: Colors.grey),
+                                  hintText: 'Tahun'),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        FadeInAnimation(
+                          delay: 1.8,
+                          child:  Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: MyColors.bgformborder),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child:
+                            TextFormField(
+                              textCapitalization: TextCapitalization.characters,
+                              controller: controller.warnaController,
+                              obscureText:false,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(18),
+                                  border: InputBorder.none,
+                                  hintStyle: GoogleFonts.nunito(color: Colors.grey),
+                                  hintText: 'Warna'),
+                            ),
                           ),
                         ),
                         const SizedBox(

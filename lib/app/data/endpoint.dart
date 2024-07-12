@@ -123,6 +123,7 @@ class API {
     required String kategorikendaraan,
     required String tahun,
     required String warna,
+    required String vinnumber,
     required String transmisi,
   }) async {
     final data = {
@@ -138,6 +139,7 @@ class API {
       "kategori_kendaraan": kategorikendaraan,
       "tahun": tahun,
       "warna": warna,
+      "vin_number": vinnumber,
       "transmisi": transmisi,
     };
 
@@ -704,6 +706,7 @@ class API {
     required String idtipe,
     required String warna,
     required String tahun,
+    required String nomorlambung,
     required String categoryname,
     required String transmission,
   }) async {
@@ -713,6 +716,7 @@ class API {
       "id_tipe": idtipe,
       "warna": warna,
       "tahun": tahun,
+      "vin_number": nomorlambung,
       "category_name": categoryname,
       "transmission": transmission,
     };

@@ -19,6 +19,7 @@ class _SignupPageState extends State<SignupPage> {
   bool obscureText = true;
   bool obscureText2 = true;
   final controller = Get.find<AuthorizationController>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void togglePasswordVisibility() {
     setState(() {
@@ -30,6 +31,23 @@ class _SignupPageState extends State<SignupPage> {
     setState(() {
       obscureText2 = !obscureText2;
     });
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm password anda';
+    }
+    return null;
+  }
+
+  String? validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm password anda';
+    }
+    if (value != controller.passwordController.text) {
+      return 'Passwords anda tidak sama';
+    }
+    return null;
   }
 
   @override
@@ -65,6 +83,7 @@ class _SignupPageState extends State<SignupPage> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Form(
+                    key: _formKey,
                     child: Column(
                       children: [
                         FadeInAnimation(
@@ -115,6 +134,7 @@ class _SignupPageState extends State<SignupPage> {
                                   ),
                                 ),
                               ),
+                              validator: validatePassword,
                             ),
                           ),
                         ),
@@ -147,6 +167,7 @@ class _SignupPageState extends State<SignupPage> {
                                   ),
                                 ),
                               ),
+                              validator: validateConfirmPassword,
                             ),
                           ),
                         ),
@@ -157,11 +178,11 @@ class _SignupPageState extends State<SignupPage> {
                           delay: 2.7,
                           child: Obx(() => CustomElevatedButton(
                             message: "Next",
-                            function: controller.isSignupFormValid.value
-                                ? () async {
-                              Get.toNamed(Routes.SINGUPNEXT);
-                            }
-                                : () async {},
+                            function: () {
+                              if (_formKey.currentState?.validate() == true) {
+                                Get.toNamed(Routes.SINGUPNEXT);
+                              }
+                            },
                             color: controller.isSignupFormValid.value
                                 ? MyColors.appPrimaryColor
                                 : Colors.grey,
