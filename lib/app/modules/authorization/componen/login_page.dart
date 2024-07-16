@@ -221,29 +221,29 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const Spacer(),
-                    FadeInAnimation(
-                      delay: 3.6,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 50),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Tidak punya Akun ?",
-                              style: Common().hinttext,
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  Get.to(const SignupPage());
-                                },
-                                child: Text(
-                                  "Register Sekarang",
-                                  style: Common().mediumTheme,
-                                )),
-                          ],
-                        ),
-                      ),
-                    )
+                    // FadeInAnimation(
+                    //   delay: 3.6,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(left: 50),
+                    //     child: Row(
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: [
+                    //         Text(
+                    //           "Tidak punya Akun ?",
+                    //           style: Common().hinttext,
+                    //         ),
+                    //         TextButton(
+                    //             onPressed: () {
+                    //               Get.to(const SignupPage());
+                    //             },
+                    //             child: Text(
+                    //               "Register Sekarang",
+                    //               style: Common().mediumTheme,
+                    //             )),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ),

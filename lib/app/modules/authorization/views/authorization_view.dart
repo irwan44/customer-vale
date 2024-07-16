@@ -80,20 +80,20 @@ class AuthorizationView extends GetView<AuthorizationController> {
                   ),
                 ),
                 SizedBox(height: 10,),
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40),
-                  child: FadeInAnimation(
-                    delay: 3.0,
-                    child: CustomElevatedButton2(
-                      message: "Register",
-                      function: () async {
-                        HapticFeedback.lightImpact();
-                        Get.toNamed(Routes.SINGUP);
-                      },
-                      color: Colors.white,
-                    ),
-                   ),
-                 ),
+                // Container(
+                //   margin: EdgeInsets.only(left: 40, right: 40),
+                //   child: FadeInAnimation(
+                //     delay: 3.0,
+                //     child: CustomElevatedButton2(
+                //       message: "Register",
+                //       function: () async {
+                //         HapticFeedback.lightImpact();
+                //         Get.toNamed(Routes.SINGUP);
+                //       },
+                //       color: Colors.white,
+                //     ),
+                //    ),
+                //  ),
                 ],
               ),
             ),
