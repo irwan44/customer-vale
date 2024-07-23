@@ -282,7 +282,7 @@ class BookingController extends GetxController {
     isLoading.value = true;
     var KendaraanPIC = await API.PilihKendaraanPIC();
     if (KendaraanPIC != null) {
-      tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
+      tipeListPIC.value = (KendaraanPIC.dataPIC?.kendaraan ?? []).cast<Kendaraanpic>();
       filteredListPIC.value = tipeListPIC.value;
 
       if (tipeListPIC.isNotEmpty) {
@@ -321,7 +321,7 @@ class BookingController extends GetxController {
     }
 
     if (KendaraanPIC != null) {
-      tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
+      tipeListPIC.value = (KendaraanPIC.dataPIC?.kendaraan ?? []).cast<Kendaraanpic>();
       filteredListPIC.value = tipeListPIC.value; // Assign the observable value
       if (tipeListPIC.isNotEmpty) {
         selectedTransmisiPIC.value = tipeListPIC.first;

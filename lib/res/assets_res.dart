@@ -7,6 +7,6 @@ class AssetsRes {
   AssetsRes._();
 
   static const String PLUGIN_NAME = 'customer_bengkelly';
-  static const String PLUGIN_VERSION = '1.4.4+1';
+  static const String PLUGIN_VERSION = '1.5.0+1';
   static const String PROFILE = 'assets/images/profile.png';
 }

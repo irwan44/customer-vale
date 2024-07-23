@@ -155,7 +155,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            nama,
+                                            nama ??'',
                                             style: GoogleFonts.nunito(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -169,7 +169,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       ),
                                     ),
                                     Text(
-                                      email,
+                                      email ??'',
                                       style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -268,7 +268,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            nama,
+                                            nama ??'',
                                             style: GoogleFonts.nunito(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -282,14 +282,14 @@ class _ProfileViewState extends State<ProfileView> {
                                       ),
                                     ),
                                     Text(
-                                      email,
+                                      email ??'',
                                       style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
-                                      hp,
+                                      hp ??'',
                                       style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -389,7 +389,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            nama,
+                                            nama ??'',
                                             style: GoogleFonts.nunito(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -403,14 +403,14 @@ class _ProfileViewState extends State<ProfileView> {
                                       ),
                                     ),
                                     Text(
-                                      email,
+                                      email ??'',
                                       style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
-                                      hp,
+                                      hp ??'',
                                       style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,

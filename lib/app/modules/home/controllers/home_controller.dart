@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:package_info/package_info.dart';
 
 import '../../../componen/color.dart';
@@ -53,7 +54,11 @@ class HomeController extends GetxController {
 
       confirm: InkWell(
         onTap: () async {
-          await InAppUpdate.performImmediateUpdate();
+          LaunchReview.launch(
+            androidAppId: "com.vale.customer.co.id",
+            // iOSAppId: "585027354",
+          );
+          // await InAppUpdate.performImmediateUpdate();
           Get.back();
         },
         child: Container(

@@ -216,6 +216,7 @@ class EmergencyBookingViewState extends State<EmergencyBookingView> {
                                         children: [
                                           const SizedBox(height: 45,),
                                           Container(
+                                              width: double.infinity,
                                               padding: EdgeInsets.all(16.0),
                                               child: InkWell(
                                                 onTap: () {

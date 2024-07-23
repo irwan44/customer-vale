@@ -358,7 +358,7 @@ class EmergencyBookingViewController extends GetxController {
       }
       //PIC
       if (KendaraanPIC != null) {
-        tipeListPIC.value = (KendaraanPIC.dataPic?.kendaraan ?? []).cast<Kendaraanpic>();
+        tipeListPIC.value = (KendaraanPIC.dataPIC?.kendaraan ?? []).cast<Kendaraanpic>();
         filteredListPIC.value = tipeListPIC.value;
 
         if (tipeListPIC.isNotEmpty) {

@@ -1,40 +1,40 @@
 class KendaraanPIC {
   bool? status;
   String? message;
-  DataPic? dataPic;
+  DataPIC? dataPIC;
 
-  KendaraanPIC({this.status, this.message, this.dataPic});
+  KendaraanPIC({this.status, this.message, this.dataPIC});
 
   KendaraanPIC.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    dataPic =
-    json['DataPic'] != null ? new DataPic.fromJson(json['DataPic']) : null;
+    dataPIC =
+    json['DataPIC'] != null ? new DataPIC.fromJson(json['DataPIC']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
-    if (this.dataPic != null) {
-      data['DataPic'] = this.dataPic!.toJson();
+    if (this.dataPIC != null) {
+      data['DataPIC'] = this.dataPIC!.toJson();
     }
     return data;
   }
 }
 
-class DataPic {
+class DataPIC {
   int? id;
   String? nama;
   String? email;
-  Null? alamat;
+  String? alamat;
   String? mandor;
-  Null? noTelepon;
+  String? noTelepon;
   String? createdAt;
   String? updatedAt;
   List<Kendaraanpic>? kendaraan;
 
-  DataPic(
+  DataPIC(
       {this.id,
         this.nama,
         this.email,
@@ -45,7 +45,7 @@ class DataPic {
         this.updatedAt,
         this.kendaraan});
 
-  DataPic.fromJson(Map<String, dynamic> json) {
+  DataPIC.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nama = json['nama'];
     email = json['email'];

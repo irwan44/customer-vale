@@ -100,13 +100,6 @@ class _MyAppState extends State<MyApp> {
       // Save token to GetStorage
       final storage = GetStorage();
       storage.write('fcm_token', _token);
-
-      // Subscribe to topic
-      messaging.subscribeToTopic('ValeBooking').then((_) {
-        print('Subscribed to ValeBooking topic');
-      }).catchError((error) {
-        print('Failed to subscribe to ValeBooking topic: $error');
-      });
     } else {
       print("User declined or has not accepted permission");
     }
